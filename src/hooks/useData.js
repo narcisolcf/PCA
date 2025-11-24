@@ -134,3 +134,55 @@ export function useUnidades() {
     deleteUnidade
   }
 }
+
+export function usePCA() {
+  const [pca, setPca] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const currentYear = new Date().getFullYear()
+
+  const fetchPCA = useCallback(async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      // Tenta buscar o PCA do ano atual
+      const data = await db.pca.getByAno(currentYear) 
+      setPca(data)
+    } catch (err) {
+      console.error(`Erro ao carregar PCA do ano ${currentYear}:`, err)
+      setError(err.message)
+      // Se não encontrar, ele não lida com a criação automática aqui, 
+      // mas podemos assumir que o seed já criou um rascunho.
+    } finally {
+      setLoading(false)
+    }
+  }, [currentYear])
+
+  useEffect(() => {
+    fetchPCA()
+  }, [fetchPCA])
+
+  const updatePCAStatus = async (status) => {
+    if (!pca) {
+      // Se o PCA não existir (o que é improvável se o seed rodar), retorna erro.
+      return { success: false, error: 'PCA do ano atual não encontrado.' }
+    }
+    
+    try {
+      const updated = await db.pca.updateStatus(pca.id, status)
+      setPca(updated) // Atualiza o estado
+      return { success: true, data: updated }
+    } catch (err) {
+      console.error('Erro ao atualizar status do PCA:', err)
+      return { success: false, error: err.message }
+    }
+  }
+
+  return {
+    pca,
+    loading,
+    error,
+    refresh: fetchPCA,
+    updatePCAStatus
+  }
+}
