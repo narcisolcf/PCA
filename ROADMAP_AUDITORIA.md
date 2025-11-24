@@ -1,8 +1,8 @@
 # 🎯 Roadmap de Auditoria - PCA Sistema
 
-**Progresso Geral:** `[░░░░░░░░░░░░░░░░░░░░] 0%`
+**Progresso Geral:** `[████░░░░░░░░░░░░░░░░] 22%`
 **Última Atualização:** 2025-11-24
-**Status:** Iniciando Auditoria
+**Status:** Em Andamento - Validações Implementadas ✅
 
 ---
 
@@ -11,13 +11,13 @@
 | Categoria | Tarefas | Concluídas | Progresso |
 |-----------|---------|------------|-----------|
 | 🔐 Segurança (RLS) | 8 | 0 | 0% |
-| ✅ Validações | 14 | 0 | 0% |
+| ✅ Validações | 14 | 12 | 86% |
 | 🚨 Tratamento de Erros | 10 | 0 | 0% |
 | ⚡ Performance | 6 | 0 | 0% |
 | 📚 Documentação | 8 | 0 | 0% |
 | 💾 Backup | 4 | 0 | 0% |
 | 🚀 Staging/Deploy | 5 | 0 | 0% |
-| **TOTAL** | **55** | **0** | **0%** |
+| **TOTAL** | **55** | **12** | **22%** |
 
 ---
 
@@ -53,35 +53,35 @@
 **Arquivos Afetados:** `src/components/DemandaForm.jsx`, `src/pages/Unidades.jsx`, `src/lib/validators.js` (criar)
 
 ### 2.1 Criar Biblioteca de Validadores
-- [ ] **2.1.1** - Criar arquivo `src/lib/validators.js`
-- [ ] **2.1.2** - Implementar `validateEmail(email)` com regex RFC 5322
-- [ ] **2.1.3** - Implementar `validatePhone(phone)` para formato brasileiro (opcional)
-- [ ] **2.1.4** - Implementar `validateCurrency(value, min, max)` para valores monetários
-- [ ] **2.1.5** - Implementar `validateTextLength(text, min, max)`
-- [ ] **2.1.6** - Implementar `validateDate(date, allowPast = false)`
+- [x] **2.1.1** - Criar arquivo `src/lib/validators.js`
+- [x] **2.1.2** - Implementar `validateEmail(email)` com regex RFC 5322
+- [x] **2.1.3** - Implementar `validatePhone(phone)` para formato brasileiro (opcional)
+- [x] **2.1.4** - Implementar `validateCurrency(value, min, max)` para valores monetários
+- [x] **2.1.5** - Implementar `validateTextLength(text, min, max)`
+- [x] **2.1.6** - Implementar `validateDate(date, allowPast = false)`
 - [ ] **2.1.7** - Adicionar testes unitários (opcional, mas recomendado)
 
 ### 2.2 Melhorar Validação do DemandaForm
 **Arquivo:** `src/components/DemandaForm.jsx` (linha 69-78)
 
-- [ ] **2.2.1** - Adicionar limite de caracteres para `item` (max 255) conforme schema SQL
-- [ ] **2.2.2** - Adicionar limite de caracteres para `descricao` (max 5000 recomendado)
-- [ ] **2.2.3** - Adicionar limite de caracteres para `justificativa` (max 5000 recomendado)
+- [x] **2.2.1** - Adicionar limite de caracteres para `item` (max 255) conforme schema SQL
+- [x] **2.2.2** - Adicionar limite de caracteres para `descricao` (max 5000 recomendado)
+- [x] **2.2.3** - Adicionar limite de caracteres para `justificativa` (max 5000 recomendado)
 - [ ] **2.2.4** - Validar `data_prevista` não pode ser no passado (exceto se editando demanda antiga)
-- [ ] **2.2.5** - Validar `valor_unitario` não pode ser zero (apenas positivo)
-- [ ] **2.2.6** - Validar `valor_unitario` não pode exceder 999.999.999,99 (limite DECIMAL(15,2))
-- [ ] **2.2.7** - Validar `quantidade` não pode exceder 999.999 (limite razoável)
+- [x] **2.2.5** - Validar `valor_unitario` não pode ser zero (apenas positivo)
+- [x] **2.2.6** - Validar `valor_unitario` não pode exceder 999.999.999,99 (limite DECIMAL(15,2))
+- [x] **2.2.7** - Validar `quantidade` não pode exceder 999.999 (limite razoável)
 
 ### 2.3 Melhorar Validação do UnidadeForm
 **Arquivo:** `src/pages/Unidades.jsx` (componente UnidadeForm, linha 8-89)
 
-- [ ] **2.3.1** - Validar `nome` obrigatório e max 255 caracteres (linha 24 já valida vazio)
-- [ ] **2.3.2** - Validar `sigla` max 20 caracteres (conforme schema linha 15)
-- [ ] **2.3.3** - Validar `email` formato válido usando `validateEmail()` (linha 72 tem type="email", mas HTML5 validation é fraco)
-- [ ] **2.3.4** - Validar `telefone` formato brasileiro (xx) xxxxx-xxxx ou similar (opcional, máscara)
-- [ ] **2.3.5** - Validar `responsavel` max 255 caracteres
-- [ ] **2.3.6** - Exibir mensagens de erro claras para cada campo inválido (criar estado `errors`)
-- [ ] **2.3.7** - Adicionar feedback visual de erro (border vermelho, texto de erro abaixo do campo)
+- [x] **2.3.1** - Validar `nome` obrigatório e max 255 caracteres (linha 24 já valida vazio)
+- [x] **2.3.2** - Validar `sigla` max 20 caracteres (conforme schema linha 15)
+- [x] **2.3.3** - Validar `email` formato válido usando `validateEmail()` (linha 72 tem type="email", mas HTML5 validation é fraco)
+- [x] **2.3.4** - Validar `telefone` formato brasileiro (xx) xxxxx-xxxx ou similar (opcional, máscara)
+- [x] **2.3.5** - Validar `responsavel` max 255 caracteres
+- [x] **2.3.6** - Exibir mensagens de erro claras para cada campo inválido (criar estado `errors`)
+- [x] **2.3.7** - Adicionar feedback visual de erro (border vermelho, texto de erro abaixo do campo)
 
 **Critério de Aceitação:** Formulários não permitem submissão com dados inválidos, com mensagens claras e feedback visual. Valores respeitam limites do schema SQL.
 
@@ -264,12 +264,48 @@ Os seguintes itens foram identificados mas serão tratados em fases futuras:
 
 ## 🏁 STATUS ATUAL
 
-**Fase Atual:** Planejamento Completo
-**Próxima Tarefa:** Iniciar implementação de RLS (Item 1.1)
+**Fase Atual:** Validações Implementadas ✅
+**Próxima Tarefa:** Tratamento de Erros (Item 3) ou RLS (Item 1)
 **Bloqueadores:** Nenhum
-**Notas:** Roadmap criado e aguardando aprovação para iniciar execução.
+**Progresso:** 12/55 tarefas completadas (22%)
+
+### ✅ Completado Nesta Sessão (2025-11-24)
+
+**Item 2 - Validações de Formulário (86% concluído)**
+
+1. **Biblioteca de Validadores Criada** (`src/lib/validators.js`)
+   - ✅ Validadores reutilizáveis: `required`, `email`, `phone`, `minLen`, `maxLen`, `positive`, `nonNegative`, `maxValue`, `notPastDate`
+   - ✅ Função helper `validateForm(data, rules)` para validação centralizada
+   - ✅ Helpers: `hasErrors()`, `clearError()`
+
+2. **DemandaForm.jsx Refatorado**
+   - ✅ Validação de campos obrigatórios: `unidade_id`, `item`, `quantidade`, `valor_unitario`
+   - ✅ Limites de caracteres: `item` (255), `descricao` (5000), `justificativa` (5000)
+   - ✅ Limites de valores: `quantidade` (999.999), `valor_unitario` (999.999.999,99)
+   - ✅ Mensagens de erro claras e contextuais
+
+3. **UnidadeForm Refatorado** (`src/pages/Unidades.jsx`)
+   - ✅ Estado de `errors` implementado
+   - ✅ Validação completa: `nome`, `sigla`, `email`, `telefone`, `responsavel`
+   - ✅ Feedback visual em todos os campos (prop `error`)
+   - ✅ Reset de erros ao abrir/fechar modal
+
+**Pendente:**
+- ⏳ Validação de `data_prevista` não no passado (2.2.4)
+- ⏳ Testes unitários (2.1.7 - opcional)
+
+### 📋 Próximos Passos Recomendados
+
+**Opção A - Tratamento de Erros (Item 3)** - Recomendado
+- Criar `src/lib/errorHandler.js`
+- Melhorar mensagens de erro do Supabase
+- Implementar retry automático
+
+**Opção B - RLS (Item 1)**
+- Habilitar Row Level Security
+- Criar políticas de acesso
 
 ---
 
-**Última modificação:** 2025-11-24 por Claude (IA Tech Lead)
-**Próxima revisão:** Após completar cada categoria (atualização automática do progresso)
+**Última modificação:** 2025-11-24 por Claude (Desenvolvedor Front-end Sênior)
+**Próxima revisão:** Após implementar Item 3 ou Item 1
