@@ -158,7 +158,13 @@ SELECT
   COUNT(*) AS quantidade
 FROM demandas
 WHERE item LIKE '[TESTE]%'
-GROUP BY trimestre
+GROUP BY
+  CASE
+    WHEN EXTRACT(MONTH FROM data_prevista) <= 3 THEN 'Q1 2025'
+    WHEN EXTRACT(MONTH FROM data_prevista) <= 6 THEN 'Q2 2025'
+    WHEN EXTRACT(MONTH FROM data_prevista) <= 9 THEN 'Q3 2025'
+    ELSE 'Q4 2025'
+  END
 ORDER BY trimestre;
 
 -- Estatísticas de valores
