@@ -237,3 +237,26 @@ Após documentar os resultados:
 
 **Última atualização:** 2025-11-25
 **Responsável:** Tech Lead / QA
+
+---
+
+### Resultados dos Testes de Performance (Execução Inicial)
+
+**Ambiente:** Local
+**Data:** 25/11/2025
+**Navegador:** Chrome (Simulado)
+
+| Página      | Tempo de Carregamento | Observações                          |
+|-------------|----------------------|--------------------------------------|
+| Dashboard   | < 1s                 | ✅ Fluido. Carregou instantaneamente, mas sem dados (0 demandas).    |
+| Relatórios  | < 1s                 | ✅ Fluido. Interface carrega bem, gráficos vazios.    |
+| Demandas    | < 1s                 | ✅ Fluido. Lista vazia.    |
+| PCA         | < 1s                 | ✅ Fluido. Sem dados.    |
+
+**Gargalos Identificados:**
+- [x] Outro: **Banco de dados não conectado ou vazio.** O arquivo `.env` parece estar ausente ou não configurado, fazendo com que o app use credenciais de placeholder. Consequentemente, não foi possível validar a performance com a massa de dados de 500 itens.
+
+**Ações Recomendadas:**
+1. Criar arquivo `.env` com `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
+2. Executar o script `supabase-seed-performance.sql` no Supabase.
+3. Rodar novamente os testes de performance para validar o comportamento com carga.
