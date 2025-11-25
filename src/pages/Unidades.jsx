@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Plus, Edit2, Trash2, Building2, Mail, Phone, User } from 'lucide-react'
 import { PageHeader } from '../components/Header'
 import { Button, Card, Input, Modal, LoadingState, EmptyState, Toast } from '../components/ui'
 import { useUnidades, useDemandas } from '../hooks/useData'
 import { formatCurrency } from '../lib/utils'
+import { validators, validateForm, hasErrors } from '../lib/validators'
 
 function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = false }) {
   const [formData, setFormData] = useState({
@@ -14,15 +15,49 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
     telefone: initialData?.telefone || ''
   })
 
+  const [errors, setErrors] = useState({})
+
+  // Resetar erros quando modal abre/fecha ou quando muda initialData
+  useEffect(() => {
+    setErrors({})
+    setFormData({
+      nome: initialData?.nome || '',
+      sigla: initialData?.sigla || '',
+      responsavel: initialData?.responsavel || '',
+      email: initialData?.email || '',
+      telefone: initialData?.telefone || ''
+    })
+  }, [initialData, isOpen])
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+
+    // Limpar erro do campo quando usuário digita
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: null }))
+    }
+  }
+
+  const validate = () => {
+    const validationRules = {
+      nome: [validators.required, validators.minLen(3), validators.maxLen(255)],
+      sigla: [validators.maxLen(20)],
+      responsavel: [validators.maxLen(255)],
+      email: [validators.email, validators.maxLen(255)],
+      telefone: [validators.phone]
+    }
+
+    const newErrors = validateForm(formData, validationRules)
+    setErrors(newErrors)
+    return !hasErrors(newErrors)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!formData.nome.trim()) return
-    onSubmit(formData)
+    if (validate()) {
+      onSubmit(formData)
+    }
   }
 
   return (
@@ -38,6 +73,7 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
           value={formData.nome}
           onChange={handleChange}
           placeholder="Ex: Secretaria de Saúde"
+          error={errors.nome}
           required
         />
 
@@ -48,6 +84,7 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
             value={formData.sigla}
             onChange={handleChange}
             placeholder="Ex: SEMUS"
+            error={errors.sigla}
           />
           <Input
             label="Telefone"
@@ -55,6 +92,7 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
             value={formData.telefone}
             onChange={handleChange}
             placeholder="(99) 99999-9999"
+            error={errors.telefone}
           />
         </div>
 
@@ -64,6 +102,7 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
           value={formData.responsavel}
           onChange={handleChange}
           placeholder="Nome do gestor responsável"
+          error={errors.responsavel}
         />
 
         <Input
@@ -73,6 +112,7 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
           value={formData.email}
           onChange={handleChange}
           placeholder="email@municipio.gov.br"
+          error={errors.email}
         />
 
         <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">

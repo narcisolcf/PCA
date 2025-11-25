@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Button, Input, Textarea, Select, Modal } from './ui'
 import { formatCurrency, getQuarter, PRIORITY_CONFIG } from '../lib/utils'
+import { validators, validateForm, hasErrors } from '../lib/validators'
 
 export function DemandaForm({ 
   isOpen, 
@@ -67,14 +68,18 @@ export function DemandaForm({
   }
 
   const validate = () => {
-    const newErrors = {}
-    if (!formData.unidade_id) newErrors.unidade_id = 'Selecione uma unidade'
-    if (!formData.item.trim()) newErrors.item = 'Informe o item'
-    if (formData.quantidade < 1) newErrors.quantidade = 'Quantidade deve ser maior que 0'
-    if (formData.valor_unitario < 0) newErrors.valor_unitario = 'Valor inválido'
-    
+    const validationRules = {
+      unidade_id: [validators.required],
+      item: [validators.required, validators.minLen(3), validators.maxLen(255)],
+      descricao: [validators.maxLen(5000)],
+      justificativa: [validators.maxLen(5000)],
+      quantidade: [validators.required, validators.positive, validators.maxValue(999999)],
+      valor_unitario: [validators.required, validators.nonNegative, validators.maxValue(999999999.99)]
+    }
+
+    const newErrors = validateForm(formData, validationRules)
     setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return !hasErrors(newErrors)
   }
 
   const handleSubmit = (e) => {
