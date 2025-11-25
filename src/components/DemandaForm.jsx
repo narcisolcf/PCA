@@ -27,31 +27,30 @@ export function DemandaForm({
 
   // Reset form when modal opens/closes or when editing different item
   useEffect(() => {
-    if (initialData) {
-      setFormData({
-        unidade_id: initialData.unidade_id || '',
-        item: initialData.item || '',
-        descricao: initialData.descricao || '',
-        justificativa: initialData.justificativa || '',
-        quantidade: initialData.quantidade || 1,
-        valor_unitario: initialData.valor_unitario || 0,
-        data_prevista: initialData.data_prevista?.split('T')[0] || '',
-        prioridade: initialData.prioridade || 3,
-        status: initialData.status || 'pendente'
-      })
-    } else {
-      setFormData({
-        unidade_id: '',
-        item: '',
-        descricao: '',
-        justificativa: '',
-        quantidade: 1,
-        valor_unitario: 0,
-        data_prevista: '',
-        prioridade: 3,
-        status: 'pendente'
-      })
+    const newFormData = initialData ? {
+      unidade_id: initialData.unidade_id || '',
+      item: initialData.item || '',
+      descricao: initialData.descricao || '',
+      justificativa: initialData.justificativa || '',
+      quantidade: initialData.quantidade || 1,
+      valor_unitario: initialData.valor_unitario || 0,
+      data_prevista: initialData.data_prevista?.split('T')[0] || '',
+      prioridade: initialData.prioridade || 3,
+      status: initialData.status || 'pendente'
+    } : {
+      unidade_id: '',
+      item: '',
+      descricao: '',
+      justificativa: '',
+      quantidade: 1,
+      valor_unitario: 0,
+      data_prevista: '',
+      prioridade: 3,
+      status: 'pendente'
     }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFormData(newFormData)
     setErrors({})
   }, [initialData, isOpen])
 

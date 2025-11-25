@@ -8,7 +8,7 @@ import { useDemandas, useUnidades } from '../hooks/useData'
 import { formatCurrency, STATUS_CONFIG } from '../lib/utils'
 
 export function DemandasPage() {
-  const { demandas, loading, createDemanda, updateDemanda, deleteDemanda, refresh } = useDemandas()
+  const { demandas, loading, createDemanda, updateDemanda, deleteDemanda } = useDemandas()
   const { unidades } = useUnidades()
   
   const [isModalOpen, setIsModalOpen] = useState(false)
