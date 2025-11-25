@@ -240,23 +240,22 @@ Após documentar os resultados:
 
 ---
 
-### Resultados dos Testes de Performance (Execução Inicial)
+### Resultados dos Testes de Performance (500 demandas)
 
-**Ambiente:** Local
+**Ambiente:** Local (macOS)
 **Data:** 25/11/2025
-**Navegador:** Chrome (Simulado)
+**Navegador:** Chrome (Simulado via Browser Agent)
+**Comando:** `npm run dev`
 
 | Página      | Tempo de Carregamento | Observações                          |
 |-------------|----------------------|--------------------------------------|
-| Dashboard   | < 1s                 | ✅ Fluido. Carregou instantaneamente, mas sem dados (0 demandas).    |
-| Relatórios  | < 1s                 | ✅ Fluido. Interface carrega bem, gráficos vazios.    |
-| Demandas    | < 1s                 | ✅ Fluido. Lista vazia.    |
-| PCA         | < 1s                 | ✅ Fluido. Sem dados.    |
+| Dashboard   | < 1s                 | ✅ Fluido. Carregamento instantâneo. Valor Total validado: R$ 809.789.941,53.    |
+| Relatórios  | < 1s                 | ✅ Fluido. Gráficos (Pizza, Barras, Linha) renderizados corretamente e coloridos.    |
+| Demandas    | < 1s                 | ✅ Fluido. Scroll suave na lista de 500 itens. Filtros respondem imediatamente.    |
+| PCA         | < 1s                 | ✅ Fluido. Listagem e visualização sem engasgos.    |
 
 **Gargalos Identificados:**
-- [x] Outro: **Banco de dados não conectado ou vazio.** O arquivo `.env` parece estar ausente ou não configurado, fazendo com que o app use credenciais de placeholder. Consequentemente, não foi possível validar a performance com a massa de dados de 500 itens.
+- [x] Nenhum. O sistema performou excelentemente com a carga de 500 registros.
 
-**Ações Recomendadas:**
-1. Criar arquivo `.env` com `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
-2. Executar o script `supabase-seed-performance.sql` no Supabase.
-3. Rodar novamente os testes de performance para validar o comportamento com carga.
+**Status Final:**
+✅ **APROVADO** - O sistema está apto para lidar com o volume de dados estipulado.
