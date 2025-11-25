@@ -164,18 +164,19 @@ INSERT INTO pca (ano, titulo, descricao, status) VALUES
 ON CONFLICT (ano) DO NOTHING;
 
 -- ============================================
--- ROW LEVEL SECURITY (RLS) - Opcional
+-- ROW LEVEL SECURITY (RLS)
+-- ============================================
+-- ⚠️ ATENÇÃO: RLS está configurado mas as políticas são PERMISSIVAS (acesso total).
+-- Para aplicar RLS ao banco, execute o script: enable-rls.sql
+-- ⚠️ QUANDO IMPLEMENTAR AUTENTICAÇÃO: Atualizar políticas para restringir acesso.
+-- Documentação completa em: SECURITY.md
 -- ============================================
 
--- Habilitar RLS (descomente se necessário)
--- ALTER TABLE unidades_gestoras ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE demandas ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE pca ENABLE ROW LEVEL SECURITY;
-
--- Política para permitir leitura pública (ajuste conforme necessário)
--- CREATE POLICY "Permitir leitura pública" ON unidades_gestoras FOR SELECT USING (true);
--- CREATE POLICY "Permitir leitura pública" ON demandas FOR SELECT USING (true);
--- CREATE POLICY "Permitir leitura pública" ON pca FOR SELECT USING (true);
+-- NOTA: Por padrão, este schema NÃO habilita RLS automaticamente.
+-- Para habilitar RLS e aplicar políticas de segurança:
+-- 1. Execute o arquivo enable-rls.sql no Editor SQL do Supabase
+-- 2. Leia SECURITY.md para entender as políticas aplicadas
+-- 3. No futuro, após implementar autenticação, substitua políticas permissivas
 
 -- ============================================
 -- GRANTS (permissões para o anon key)
