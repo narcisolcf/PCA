@@ -5,6 +5,11 @@ Sistema de gestão do **Plano de Contratação Anual (PCA)** para municípios br
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![Supabase](https://img.shields.io/badge/Supabase-Backend-green?logo=supabase)
 ![Tailwind](https://img.shields.io/badge/Tailwind-4-blue?logo=tailwindcss)
+![Status](https://img.shields.io/badge/Status-Beta-yellow)
+![RLS](https://img.shields.io/badge/RLS-Enabled-green?logo=postgresql)
+![Performance](https://img.shields.io/badge/Tested-500%2B%20records-blue)
+
+> **Status do Projeto:** Sistema em fase beta com validações completas, tratamento de erros robusto, RLS implementado e testado com 500+ registros.
 
 ---
 
@@ -19,52 +24,58 @@ Sistema de gestão do **Plano de Contratação Anual (PCA)** para municípios br
 
 ---
 
-## 🚀 Instalação
+## 🚀 Instalação Rápida
 
-### Pré-requisitos
+> **📚 Para instruções detalhadas, consulte [INSTALL.md](INSTALL.md)**
 
-- Node.js 18+ 
-- Conta no [Supabase](https://supabase.com) (gratuita)
+### Resumo
 
-### 1. Clone e instale dependências
+1. **Clone e instale:**
+   ```bash
+   git clone https://github.com/seu-usuario/PCA.git
+   cd PCA
+   npm install
+   ```
 
-```bash
-cd pca-app
-npm install
-```
+2. **Configure o Supabase:**
+   - Crie um projeto em [supabase.com](https://supabase.com)
+   - Copie URL e chave `anon` (Settings → API)
+   - Crie `.env` na raiz:
+     ```env
+     VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+     VITE_SUPABASE_ANON_KEY=sua-chave-anon-aqui
+     ```
 
-### 2. Configure o Supabase
+3. **Execute scripts SQL (na ordem):**
+   - ✅ `supabase-schema.sql` (estrutura + seed)
+   - ✅ `enable-rls.sql` (segurança RLS - recomendado)
+   - 📊 `supabase-seed-performance.sql` (500 demandas de teste - opcional)
 
-1. Acesse [supabase.com](https://supabase.com) e crie um novo projeto
-2. Vá em **Settings > API** e copie:
-   - `Project URL` 
-   - `anon public key`
-3. Crie o arquivo `.env` na raiz do projeto:
+4. **Rode o projeto:**
+   ```bash
+   npm run dev
+   ```
 
-```env
-VITE_SUPABASE_URL=https://seu-projeto.supabase.co
-VITE_SUPABASE_ANON_KEY=sua-chave-anon-aqui
-```
+5. **Acesse:** http://localhost:5173
 
-### 3. Execute o Schema SQL
+---
 
-1. No Supabase, vá em **SQL Editor**
-2. Copie todo o conteúdo de `supabase-schema.sql`
-3. Cole e execute no editor SQL
+## 📚 Documentação do Projeto
 
-O schema criará automaticamente:
-- Tabelas: `unidades_gestoras`, `demandas`, `pca`, `pca_itens`
-- Triggers para atualização automática
-- Views para relatórios
-- Dados iniciais (seeds) com secretarias padrão
+| Documento | Descrição |
+|-----------|-----------|
+| **[INSTALL.md](INSTALL.md)** | 📦 Guia completo de instalação passo a passo (15-30 min) |
+| **[CONFIG.md](CONFIG.md)** | ⚙️ Configuração de variáveis de ambiente e deploy |
+| **[SECURITY.md](SECURITY.md)** | 🔐 Política de segurança RLS e plano de autenticação |
+| **[PERFORMANCE.md](PERFORMANCE.md)** | 📊 Guia de testes de performance com 500+ registros |
+| **[ROADMAP_AUDITORIA.md](ROADMAP_AUDITORIA.md)** | 🎯 Roadmap de auditoria e status do projeto (59% completo) |
 
-### 4. Execute o projeto
+### ⚠️ Avisos Importantes
 
-```bash
-npm run dev
-```
-
-Acesse: [http://localhost:5173](http://localhost:5173)
+- **Autenticação:** O sistema ainda **não possui autenticação** implementada
+- **RLS:** Row Level Security está habilitado com **políticas permissivas** (acesso público)
+- **Produção:** Antes de usar em produção, implemente autenticação e restrinja políticas RLS
+- **Limites Testados:** Sistema testado com até **500 demandas** sem perda de performance
 
 ---
 
@@ -127,12 +138,38 @@ pca (Plano Anual)
 
 ## 🔐 Segurança
 
-O Supabase oferece:
-- **Row Level Security (RLS)** - Controle de acesso por linha
-- **Chaves API** seguras (anon + service_role)
-- **Autenticação** integrada (opcional)
+### Status Atual
 
-Para produção, habilite o RLS e configure políticas adequadas.
+✅ **Row Level Security (RLS)** - Implementado com políticas permissivas
+✅ **Chaves API** - Usando `anon` key (segura para frontend)
+✅ **Validações** - Formulários com validação completa
+✅ **Tratamento de Erros** - Mensagens amigáveis em português
+⚠️ **Autenticação** - Não implementada (planejada para futuro)
+
+### Políticas RLS Atuais
+
+O sistema possui 16 políticas de acesso (4 por tabela) que **permitem acesso público** enquanto não há autenticação:
+
+```sql
+-- Exemplo: Política SELECT para demandas
+CREATE POLICY "Acesso público: SELECT em demandas"
+ON demandas FOR SELECT TO anon, authenticated
+USING (true);  -- Permissiva: permite todos os acessos
+```
+
+**Por quê?** O sistema não possui login/autenticação ainda.
+
+**Quando implementar Auth:**
+1. Consulte `SECURITY.md` para plano de migração em 3 fases
+2. Implemente Supabase Auth (login/senha ou OAuth)
+3. Atualize políticas para restringir acesso por `auth.uid()`
+
+### Boas Práticas
+
+✅ Use apenas a chave `anon` (nunca `service_role` no frontend)
+✅ Mantenha `.env` no `.gitignore` (nunca commite credenciais)
+✅ Use HTTPS em produção (Vercel/Netlify fornecem automaticamente)
+✅ Consulte `CONFIG.md` para configurações de segurança avançadas
 
 ---
 
