@@ -3,6 +3,14 @@ import { Edit2, Trash2, Eye, MoreVertical, ChevronDown, ChevronUp } from 'lucide
 import { Card, Badge, Button, EmptyState } from './ui'
 import { formatCurrency, formatDate, STATUS_CONFIG, PRIORITY_CONFIG, cn } from '../lib/utils'
 
+// Sort icon component (moved outside to avoid recreation on every render)
+const SortIcon = ({ field, sortField, sortDirection }) => {
+  if (sortField !== field) return null
+  return sortDirection === 'asc'
+    ? <ChevronUp className="w-4 h-4" />
+    : <ChevronDown className="w-4 h-4" />
+}
+
 export function DemandasTable({ 
   demandas = [], 
   onEdit, 
@@ -37,13 +45,6 @@ export function DemandasTable({
     return 0
   })
 
-  const SortIcon = ({ field }) => {
-    if (sortField !== field) return null
-    return sortDirection === 'asc' 
-      ? <ChevronUp className="w-4 h-4" />
-      : <ChevronDown className="w-4 h-4" />
-  }
-
   if (demandas.length === 0 && !loading) {
     return (
       <Card className="p-8">
@@ -73,7 +74,7 @@ export function DemandasTable({
                 onClick={() => handleSort('item')}
               >
                 <div className="flex items-center gap-2">
-                  Item <SortIcon field="item" />
+                  Item <SortIcon field="item" sortField={sortField} sortDirection={sortDirection} />
                 </div>
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
@@ -84,7 +85,7 @@ export function DemandasTable({
                 onClick={() => handleSort('valor_total')}
               >
                 <div className="flex items-center gap-2">
-                  Valor <SortIcon field="valor_total" />
+                  Valor <SortIcon field="valor_total" sortField={sortField} sortDirection={sortDirection} />
                 </div>
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
@@ -98,7 +99,7 @@ export function DemandasTable({
                 onClick={() => handleSort('data_prevista')}
               >
                 <div className="flex items-center gap-2">
-                  Previsão <SortIcon field="data_prevista" />
+                  Previsão <SortIcon field="data_prevista" sortField={sortField} sortDirection={sortDirection} />
                 </div>
               </th>
               <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">

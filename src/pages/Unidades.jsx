@@ -19,14 +19,17 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
 
   // Resetar erros quando modal abre/fecha ou quando muda initialData
   useEffect(() => {
-    setErrors({})
-    setFormData({
+    const newFormData = {
       nome: initialData?.nome || '',
       sigla: initialData?.sigla || '',
       responsavel: initialData?.responsavel || '',
       email: initialData?.email || '',
       telefone: initialData?.telefone || ''
-    })
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFormData(newFormData)
+    setErrors({})
   }, [initialData, isOpen])
 
   const handleChange = (e) => {
