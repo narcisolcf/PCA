@@ -71,7 +71,6 @@ INSERT INTO demandas (
   justificativa,
   quantidade,
   valor_unitario,
-  valor_total,
   data_prevista,
   status,
   created_at
@@ -100,9 +99,6 @@ SELECT
   -- Valor unitário (varia entre R$ 100 e R$ 50.000)
   -- Usando função seno para distribuição mais realista
   (100 + ABS(SIN(s.n::FLOAT / 7) * 49900))::NUMERIC(15,2),
-
-  -- Valor total será calculado pelo trigger
-  0,
 
   -- Data prevista (distribuir ao longo de 2025)
   -- Q1: Jan-Mar, Q2: Abr-Jun, Q3: Jul-Set, Q4: Out-Dez
