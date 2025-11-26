@@ -1,13 +1,13 @@
-import { NavLink, useLocation } from 'react-router-dom'
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Building2, 
-  BarChart3, 
+import { NavLink, useLocation } from 'react-router-dom';
+import {
+  LayoutDashboard,
+  FileText,
+  Building2,
+  BarChart3,
   Settings,
-  ClipboardList
-} from 'lucide-react'
-import { cn } from '../lib/utils'
+  ClipboardList,
+} from 'lucide-react';
+import { cn } from '../lib/utils';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -15,10 +15,10 @@ const navItems = [
   { path: '/unidades', label: 'Unidades', icon: Building2 },
   { path: '/pca', label: 'PCA', icon: ClipboardList },
   { path: '/relatorios', label: 'Relatórios', icon: BarChart3 },
-]
+];
 
 export function Header() {
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <header className="sticky top-0 z-40 glass">
@@ -31,31 +31,33 @@ export function Header() {
             </div>
             <div>
               <h1 className="text-lg font-bold text-slate-900">PCA</h1>
-              <p className="text-xs text-slate-500 -mt-0.5">Plano de Contratação Anual</p>
+              <p className="text-xs text-slate-500 -mt-0.5">
+                Plano de Contratação Anual
+              </p>
             </div>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            {navItems.map(item => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.path
-              
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+
               return (
                 <NavLink
                   key={item.path}
                   to={item.path}
                   className={cn(
                     'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all',
-                    isActive 
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                    isActive
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                       : 'text-slate-600 hover:bg-slate-100'
                   )}
                 >
                   <Icon className="w-4 h-4" />
                   {item.label}
                 </NavLink>
-              )
+              );
             })}
           </nav>
 
@@ -72,30 +74,30 @@ export function Header() {
 
         {/* Mobile Navigation */}
         <nav className="md:hidden flex items-center gap-1 pb-3 overflow-x-auto">
-          {navItems.map(item => {
-            const Icon = item.icon
-            const isActive = location.pathname === item.path
-            
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+
             return (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={cn(
                   'flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap',
-                  isActive 
-                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                  isActive
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                     : 'text-slate-600 hover:bg-slate-100'
                 )}
               >
                 <Icon className="w-4 h-4" />
                 {item.label}
               </NavLink>
-            )
+            );
           })}
         </nav>
       </div>
     </header>
-  )
+  );
 }
 
 export function PageHeader({ title, description, action }) {
@@ -103,11 +105,9 @@ export function PageHeader({ title, description, action }) {
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-        {description && (
-          <p className="text-slate-500 mt-1">{description}</p>
-        )}
+        {description && <p className="text-slate-500 mt-1">{description}</p>}
       </div>
       {action}
     </div>
-  )
+  );
 }

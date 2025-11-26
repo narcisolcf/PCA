@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Header } from './components/Header'
-import { DashboardPage } from './pages/Dashboard'
-import { DemandasPage } from './pages/Demandas'
-import { UnidadesPage } from './pages/Unidades'
-import { PCAPage } from './pages/PCA'
-import { RelatoriosPage } from './pages/Relatorios'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Header } from './components/Header';
+import { DashboardPage } from './pages/Dashboard';
+import { DemandasPage } from './pages/Demandas';
+import { UnidadesPage } from './pages/Unidades';
+import { PCAPage } from './pages/PCA';
+import { RelatoriosPage } from './pages/Relatorios';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
         </main>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

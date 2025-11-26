@@ -1,21 +1,43 @@
-import { useState, useEffect } from 'react'
-import { Plus, Edit2, Trash2, Building2, Mail, Phone, User } from 'lucide-react'
-import { PageHeader } from '../components/Header'
-import { Button, Card, Input, Modal, LoadingState, EmptyState, Toast } from '../components/ui'
-import { useUnidades, useDemandas } from '../hooks/useData'
-import { formatCurrency } from '../lib/utils'
-import { validators, validateForm, hasErrors } from '../lib/validators'
+import { useState, useEffect } from 'react';
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Building2,
+  Mail,
+  Phone,
+  User,
+} from 'lucide-react';
+import { PageHeader } from '../components/Header';
+import {
+  Button,
+  Card,
+  Input,
+  Modal,
+  LoadingState,
+  EmptyState,
+  Toast,
+} from '../components/ui';
+import { useUnidades, useDemandas } from '../hooks/useData';
+import { formatCurrency } from '../lib/utils';
+import { validators, validateForm, hasErrors } from '../lib/validators';
 
-function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = false }) {
+function UnidadeForm({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialData = null,
+  loading = false,
+}) {
   const [formData, setFormData] = useState({
     nome: initialData?.nome || '',
     sigla: initialData?.sigla || '',
     responsavel: initialData?.responsavel || '',
     email: initialData?.email || '',
-    telefone: initialData?.telefone || ''
-  })
+    telefone: initialData?.telefone || '',
+  });
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
 
   // Resetar erros quando modal abre/fecha ou quando muda initialData
   useEffect(() => {
@@ -24,23 +46,23 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
       sigla: initialData?.sigla || '',
       responsavel: initialData?.responsavel || '',
       email: initialData?.email || '',
-      telefone: initialData?.telefone || ''
-    }
+      telefone: initialData?.telefone || '',
+    };
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFormData(newFormData)
-    setErrors({})
-  }, [initialData, isOpen])
+    setFormData(newFormData);
+    setErrors({});
+  }, [initialData, isOpen]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     // Limpar erro do campo quando usuário digita
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: null }))
+      setErrors((prev) => ({ ...prev, [name]: null }));
     }
-  }
+  };
 
   const validate = () => {
     const validationRules = {
@@ -48,20 +70,20 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
       sigla: [validators.maxLen(20)],
       responsavel: [validators.maxLen(255)],
       email: [validators.email, validators.maxLen(255)],
-      telefone: [validators.phone]
-    }
+      telefone: [validators.phone],
+    };
 
-    const newErrors = validateForm(formData, validationRules)
-    setErrors(newErrors)
-    return !hasErrors(newErrors)
-  }
+    const newErrors = validateForm(formData, validationRules);
+    setErrors(newErrors);
+    return !hasErrors(newErrors);
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (validate()) {
-      onSubmit(formData)
+      onSubmit(formData);
     }
-  }
+  };
 
   return (
     <Modal
@@ -128,87 +150,94 @@ function UnidadeForm({ isOpen, onClose, onSubmit, initialData = null, loading = 
         </div>
       </form>
     </Modal>
-  )
+  );
 }
 
 export function UnidadesPage() {
-  const { unidades, loading, createUnidade, updateUnidade, deleteUnidade } = useUnidades()
-  const { demandas } = useDemandas()
-  
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingUnidade, setEditingUnidade] = useState(null)
-  const [formLoading, setFormLoading] = useState(false)
-  const [toast, setToast] = useState(null)
+  const { unidades, loading, createUnidade, updateUnidade, deleteUnidade } =
+    useUnidades();
+  const { demandas } = useDemandas();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingUnidade, setEditingUnidade] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [toast, setToast] = useState(null);
 
   const showToast = (message, type = 'success') => {
-    setToast({ message, type })
-    setTimeout(() => setToast(null), 3000)
-  }
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleOpenModal = (unidade = null) => {
-    setEditingUnidade(unidade)
-    setIsModalOpen(true)
-  }
+    setEditingUnidade(unidade);
+    setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setEditingUnidade(null)
-  }
+    setIsModalOpen(false);
+    setEditingUnidade(null);
+  };
 
   const handleSubmit = async (data) => {
-    setFormLoading(true)
-    
+    setFormLoading(true);
+
     try {
       if (editingUnidade) {
-        const result = await updateUnidade(editingUnidade.id, data)
+        const result = await updateUnidade(editingUnidade.id, data);
         if (result.success) {
-          showToast('Unidade atualizada com sucesso!')
-          handleCloseModal()
+          showToast('Unidade atualizada com sucesso!');
+          handleCloseModal();
         } else {
-          showToast(result.error || 'Erro ao atualizar unidade', 'error')
+          showToast(result.error || 'Erro ao atualizar unidade', 'error');
         }
       } else {
-        const result = await createUnidade(data)
+        const result = await createUnidade(data);
         if (result.success) {
-          showToast('Unidade criada com sucesso!')
-          handleCloseModal()
+          showToast('Unidade criada com sucesso!');
+          handleCloseModal();
         } else {
-          showToast(result.error || 'Erro ao criar unidade', 'error')
+          showToast(result.error || 'Erro ao criar unidade', 'error');
         }
       }
     } finally {
-      setFormLoading(false)
+      setFormLoading(false);
     }
-  }
+  };
 
   const handleDelete = async (id) => {
-    const hasDemandas = demandas.some(d => d.unidade_id === id)
+    const hasDemandas = demandas.some((d) => d.unidade_id === id);
     if (hasDemandas) {
-      showToast('Não é possível excluir uma unidade com demandas cadastradas', 'error')
-      return
+      showToast(
+        'Não é possível excluir uma unidade com demandas cadastradas',
+        'error'
+      );
+      return;
     }
-    
-    if (!window.confirm('Tem certeza que deseja excluir esta unidade?')) return
-    
-    const result = await deleteUnidade(id)
+
+    if (!window.confirm('Tem certeza que deseja excluir esta unidade?')) return;
+
+    const result = await deleteUnidade(id);
     if (result.success) {
-      showToast('Unidade excluída com sucesso!')
+      showToast('Unidade excluída com sucesso!');
     } else {
-      showToast(result.error || 'Erro ao excluir unidade', 'error')
+      showToast(result.error || 'Erro ao excluir unidade', 'error');
     }
-  }
+  };
 
   // Calculate stats per unit
   const getUnidadeStats = (unidadeId) => {
-    const unidadeDemandas = demandas.filter(d => d.unidade_id === unidadeId)
+    const unidadeDemandas = demandas.filter((d) => d.unidade_id === unidadeId);
     return {
       count: unidadeDemandas.length,
-      valor: unidadeDemandas.reduce((sum, d) => sum + (parseFloat(d.valor_total) || 0), 0)
-    }
-  }
+      valor: unidadeDemandas.reduce(
+        (sum, d) => sum + (parseFloat(d.valor_total) || 0),
+        0
+      ),
+    };
+  };
 
   if (loading) {
-    return <LoadingState message="Carregando unidades..." />
+    return <LoadingState message="Carregando unidades..." />;
   }
 
   return (
@@ -231,17 +260,15 @@ export function UnidadesPage() {
             title="Nenhuma unidade cadastrada"
             description="Comece cadastrando as secretarias e órgãos que farão parte do PCA."
             action={
-              <Button onClick={() => handleOpenModal()}>
-                + Nova Unidade
-              </Button>
+              <Button onClick={() => handleOpenModal()}>+ Nova Unidade</Button>
             }
           />
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {unidades.map(unidade => {
-            const stats = getUnidadeStats(unidade.id)
-            
+          {unidades.map((unidade) => {
+            const stats = getUnidadeStats(unidade.id);
+
             return (
               <Card key={unidade.id} className="p-6 card-hover">
                 <div className="flex items-start justify-between mb-4">
@@ -283,7 +310,10 @@ export function UnidadesPage() {
                   {unidade.email && (
                     <div className="flex items-center gap-2 text-sm text-slate-600">
                       <Mail className="w-4 h-4 text-slate-400" />
-                      <a href={`mailto:${unidade.email}`} className="hover:text-blue-600">
+                      <a
+                        href={`mailto:${unidade.email}`}
+                        className="hover:text-blue-600"
+                      >
                         {unidade.email}
                       </a>
                     </div>
@@ -299,16 +329,24 @@ export function UnidadesPage() {
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-100">
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Demandas</p>
-                    <p className="text-xl font-bold text-slate-900">{stats.count}</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wide">
+                      Demandas
+                    </p>
+                    <p className="text-xl font-bold text-slate-900">
+                      {stats.count}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wide">Valor Total</p>
-                    <p className="text-lg font-bold text-blue-600">{formatCurrency(stats.valor)}</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wide">
+                      Valor Total
+                    </p>
+                    <p className="text-lg font-bold text-blue-600">
+                      {formatCurrency(stats.valor)}
+                    </p>
                   </div>
                 </div>
               </Card>
-            )
+            );
           })}
         </div>
       )}
@@ -331,5 +369,5 @@ export function UnidadesPage() {
         />
       )}
     </div>
-  )
+  );
 }

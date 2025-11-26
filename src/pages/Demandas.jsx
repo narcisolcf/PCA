@@ -1,125 +1,145 @@
-import { useState, useMemo } from 'react'
-import { Plus, Search, Filter, Download } from 'lucide-react'
-import { PageHeader } from '../components/Header'
-import { Button, Input, Select, Card, LoadingState, Toast } from '../components/ui'
-import { DemandasTable } from '../components/DemandasTable'
-import { DemandaForm } from '../components/DemandaForm'
-import { useDemandas, useUnidades } from '../hooks/useData'
-import { formatCurrency, STATUS_CONFIG } from '../lib/utils'
+import { useState, useMemo } from 'react';
+import { Plus, Search, Filter, Download } from 'lucide-react';
+import { PageHeader } from '../components/Header';
+import {
+  Button,
+  Input,
+  Select,
+  Card,
+  LoadingState,
+  Toast,
+} from '../components/ui';
+import { DemandasTable } from '../components/DemandasTable';
+import { DemandaForm } from '../components/DemandaForm';
+import { useDemandas, useUnidades } from '../hooks/useData';
+import { formatCurrency, STATUS_CONFIG } from '../lib/utils';
 
 export function DemandasPage() {
-  const { demandas, loading, createDemanda, updateDemanda, deleteDemanda } = useDemandas()
-  const { unidades } = useUnidades()
+  const { demandas, loading, createDemanda, updateDemanda, deleteDemanda } =
+    useDemandas();
+  const { unidades } = useUnidades();
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingDemanda, setEditingDemanda] = useState(null)
-  const [formLoading, setFormLoading] = useState(false)
-  const [toast, setToast] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDemanda, setEditingDemanda] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
+  const [toast, setToast] = useState(null);
 
   // Filters
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('')
-  const [unidadeFilter, setUnidadeFilter] = useState('')
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [unidadeFilter, setUnidadeFilter] = useState('');
 
   const filteredDemandas = useMemo(() => {
-    return demandas.filter(d => {
-      const matchesSearch = !searchTerm ||
+    return demandas.filter((d) => {
+      const matchesSearch =
+        !searchTerm ||
         d.item?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        d.descricao?.toLowerCase().includes(searchTerm.toLowerCase())
+        d.descricao?.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatus = !statusFilter || d.status === statusFilter
-      const matchesUnidade = !unidadeFilter || d.unidade_id === unidadeFilter
+      const matchesStatus = !statusFilter || d.status === statusFilter;
+      const matchesUnidade = !unidadeFilter || d.unidade_id === unidadeFilter;
 
-      return matchesSearch && matchesStatus && matchesUnidade
-    })
-  }, [demandas, searchTerm, statusFilter, unidadeFilter])
+      return matchesSearch && matchesStatus && matchesUnidade;
+    });
+  }, [demandas, searchTerm, statusFilter, unidadeFilter]);
 
   const totals = useMemo(() => {
     return {
       count: filteredDemandas.length,
-      valor: filteredDemandas.reduce((sum, d) => sum + (parseFloat(d.valor_total) || 0), 0)
-    }
-  }, [filteredDemandas])
+      valor: filteredDemandas.reduce(
+        (sum, d) => sum + (parseFloat(d.valor_total) || 0),
+        0
+      ),
+    };
+  }, [filteredDemandas]);
 
   const showToast = (message, type = 'success') => {
-    setToast({ message, type })
-    setTimeout(() => setToast(null), 3000)
-  }
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const handleOpenModal = (demanda = null) => {
-    setEditingDemanda(demanda)
-    setIsModalOpen(true)
-  }
+    setEditingDemanda(demanda);
+    setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setEditingDemanda(null)
-  }
+    setIsModalOpen(false);
+    setEditingDemanda(null);
+  };
 
   const handleSubmit = async (data) => {
-    setFormLoading(true)
+    setFormLoading(true);
 
     try {
       if (editingDemanda) {
-        const result = await updateDemanda(editingDemanda.id, data)
+        const result = await updateDemanda(editingDemanda.id, data);
         if (result.success) {
-          showToast('Demanda atualizada com sucesso!')
-          handleCloseModal()
+          showToast('Demanda atualizada com sucesso!');
+          handleCloseModal();
         } else {
-          showToast(result.error || 'Erro ao atualizar demanda', 'error')
+          showToast(result.error || 'Erro ao atualizar demanda', 'error');
         }
       } else {
-        const result = await createDemanda(data)
+        const result = await createDemanda(data);
         if (result.success) {
-          showToast('Demanda criada com sucesso!')
-          handleCloseModal()
+          showToast('Demanda criada com sucesso!');
+          handleCloseModal();
         } else {
-          showToast(result.error || 'Erro ao criar demanda', 'error')
+          showToast(result.error || 'Erro ao criar demanda', 'error');
         }
       }
     } finally {
-      setFormLoading(false)
+      setFormLoading(false);
     }
-  }
+  };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Tem certeza que deseja excluir esta demanda?')) return
+    if (!window.confirm('Tem certeza que deseja excluir esta demanda?')) return;
 
-    const result = await deleteDemanda(id)
+    const result = await deleteDemanda(id);
     if (result.success) {
-      showToast('Demanda excluída com sucesso!')
+      showToast('Demanda excluída com sucesso!');
     } else {
-      showToast(result.error || 'Erro ao excluir demanda', 'error')
+      showToast(result.error || 'Erro ao excluir demanda', 'error');
     }
-  }
+  };
 
   const handleExport = () => {
     // Simple CSV export
-    const headers = ['Item', 'Unidade', 'Quantidade', 'Valor Unit.', 'Valor Total', 'Status', 'Data Prevista']
-    const rows = filteredDemandas.map(d => [
+    const headers = [
+      'Item',
+      'Unidade',
+      'Quantidade',
+      'Valor Unit.',
+      'Valor Total',
+      'Status',
+      'Data Prevista',
+    ];
+    const rows = filteredDemandas.map((d) => [
       d.item,
       d.unidade?.nome || '',
       d.quantidade,
       d.valor_unitario,
       d.valor_total,
       STATUS_CONFIG[d.status]?.label || d.status,
-      d.data_prevista || ''
-    ])
+      d.data_prevista || '',
+    ]);
 
-    const csv = [headers, ...rows].map(row => row.join(';')).join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `demandas-pca-${new Date().toISOString().split('T')[0]}.csv`
-    link.click()
-    URL.revokeObjectURL(url)
+    const csv = [headers, ...rows].map((row) => row.join(';')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `demandas-pca-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
 
-    showToast('Arquivo exportado com sucesso!')
-  }
+    showToast('Arquivo exportado com sucesso!');
+  };
 
   if (loading) {
-    return <LoadingState message="Carregando demandas..." />
+    return <LoadingState message="Carregando demandas..." />;
   }
 
   return (
@@ -156,7 +176,7 @@ export function DemandasPage() {
               { value: 'pendente', label: '⏳ Pendente' },
               { value: 'em_analise', label: '🔍 Em Análise' },
               { value: 'aprovada', label: '✅ Aprovada' },
-              { value: 'rejeitada', label: '❌ Rejeitada' }
+              { value: 'rejeitada', label: '❌ Rejeitada' },
             ]}
           />
 
@@ -164,7 +184,7 @@ export function DemandasPage() {
             value={unidadeFilter}
             onChange={(e) => setUnidadeFilter(e.target.value)}
             placeholder="Todas as unidades"
-            options={unidades.map(u => ({ value: u.id, label: u.nome }))}
+            options={unidades.map((u) => ({ value: u.id, label: u.nome }))}
           />
 
           <Button variant="secondary" onClick={handleExport}>
@@ -179,14 +199,17 @@ export function DemandasPage() {
             Exibindo <strong>{totals.count}</strong> demanda(s)
           </span>
           <span className="text-sm text-slate-600">
-            Total: <strong className="text-blue-600">{formatCurrency(totals.valor)}</strong>
+            Total:{' '}
+            <strong className="text-blue-600">
+              {formatCurrency(totals.valor)}
+            </strong>
           </span>
           {(searchTerm || statusFilter || unidadeFilter) && (
             <button
               onClick={() => {
-                setSearchTerm('')
-                setStatusFilter('')
-                setUnidadeFilter('')
+                setSearchTerm('');
+                setStatusFilter('');
+                setUnidadeFilter('');
               }}
               className="text-sm text-blue-600 hover:underline"
             >
@@ -222,5 +245,5 @@ export function DemandasPage() {
         />
       )}
     </div>
-  )
+  );
 }

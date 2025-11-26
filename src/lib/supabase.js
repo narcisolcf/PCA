@@ -1,16 +1,18 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('⚠️ Supabase credentials not found. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env file.')
+  console.warn(
+    '⚠️ Supabase credentials not found. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env file.'
+  );
 }
 
 export const supabase = createClient(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder-key'
-)
+);
 
 // Database types for TypeScript-like autocomplete in JSDoc
 /**
@@ -59,9 +61,9 @@ export const db = {
       const { data, error } = await supabase
         .from('unidades_gestoras')
         .select('*')
-        .order('nome')
-      if (error) throw error
-      return data
+        .order('nome');
+      if (error) throw error;
+      return data;
     },
 
     async create(unidade) {
@@ -69,9 +71,9 @@ export const db = {
         .from('unidades_gestoras')
         .insert(unidade)
         .select()
-        .single()
-      if (error) throw error
-      return data
+        .single();
+      if (error) throw error;
+      return data;
     },
 
     async update(id, updates) {
@@ -80,18 +82,18 @@ export const db = {
         .update(updates)
         .eq('id', id)
         .select()
-        .single()
-      if (error) throw error
-      return data
+        .single();
+      if (error) throw error;
+      return data;
     },
 
     async delete(id) {
       const { error } = await supabase
         .from('unidades_gestoras')
         .delete()
-        .eq('id', id)
-      if (error) throw error
-    }
+        .eq('id', id);
+      if (error) throw error;
+    },
   },
 
   // Demandas
@@ -99,13 +101,15 @@ export const db = {
     async getAll() {
       const { data, error } = await supabase
         .from('demandas')
-        .select(`
+        .select(
+          `
           *,
           unidade:unidades_gestoras(id, nome, sigla)
-        `)
-        .order('created_at', { ascending: false })
-      if (error) throw error
-      return data
+        `
+        )
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data;
     },
 
     async getByUnidade(unidadeId) {
@@ -113,60 +117,61 @@ export const db = {
         .from('demandas')
         .select('*')
         .eq('unidade_id', unidadeId)
-        .order('prioridade')
-      if (error) throw error
-      return data
+        .order('prioridade');
+      if (error) throw error;
+      return data;
     },
 
     async create(demanda) {
       // Remove valor_total if present, as it is a generated column in DB
-      const { valor_total, ...demandaData } = demanda
+      const { valor_total: _valor_total, ...demandaData } = demanda;
 
       const { data, error } = await supabase
         .from('demandas')
         .insert(demandaData)
-        .select(`
+        .select(
+          `
           *,
           unidade:unidades_gestoras(id, nome, sigla)
-        `)
-        .single()
-      if (error) throw error
-      return data
+        `
+        )
+        .single();
+      if (error) throw error;
+      return data;
     },
 
     async update(id, updates) {
       // Remove valor_total if present
-      const { valor_total, ...updateData } = updates
-      updateData.updated_at = new Date().toISOString()
+      const { valor_total: _valor_total, ...updateData } = updates;
+      updateData.updated_at = new Date().toISOString();
 
       const { data, error } = await supabase
         .from('demandas')
         .update(updateData)
         .eq('id', id)
-        .select(`
+        .select(
+          `
           *,
           unidade:unidades_gestoras(id, nome, sigla)
-        `)
-        .single()
-      if (error) throw error
-      return data
+        `
+        )
+        .single();
+      if (error) throw error;
+      return data;
     },
 
     async delete(id) {
-      const { error } = await supabase
-        .from('demandas')
-        .delete()
-        .eq('id', id)
-      if (error) throw error
+      const { error } = await supabase.from('demandas').delete().eq('id', id);
+      if (error) throw error;
     },
 
     async getStats() {
       const { data, error } = await supabase
         .from('demandas')
-        .select('status, valor_total, unidade_id')
-      if (error) throw error
-      return data
-    }
+        .select('status, valor_total, unidade_id');
+      if (error) throw error;
+      return data;
+    },
   },
 
   // PCA (Plano de Contratação Anual)
@@ -175,9 +180,9 @@ export const db = {
       const { data, error } = await supabase
         .from('pca')
         .select('*')
-        .order('ano', { ascending: false })
-      if (error) throw error
-      return data
+        .order('ano', { ascending: false });
+      if (error) throw error;
+      return data;
     },
 
     async getByAno(ano) {
@@ -185,9 +190,9 @@ export const db = {
         .from('pca')
         .select('*')
         .eq('ano', ano)
-        .single()
-      if (error) throw error
-      return data
+        .single();
+      if (error) throw error;
+      return data;
     },
 
     async create(pca) {
@@ -195,24 +200,24 @@ export const db = {
         .from('pca')
         .insert(pca)
         .select()
-        .single()
-      if (error) throw error
-      return data
+        .single();
+      if (error) throw error;
+      return data;
     },
 
     async updateStatus(id, status) {
-      const updates = { status }
+      const updates = { status };
       if (status === 'publicado') {
-        updates.published_at = new Date().toISOString()
+        updates.published_at = new Date().toISOString();
       }
       const { data, error } = await supabase
         .from('pca')
         .update(updates)
         .eq('id', id)
         .select()
-        .single()
-      if (error) throw error
-      return data
-    }
-  }
-}
+        .single();
+      if (error) throw error;
+      return data;
+    },
+  },
+};
