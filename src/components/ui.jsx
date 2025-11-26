@@ -1,14 +1,14 @@
 import { cn } from '../lib/utils'
 
 // Button Component
-export function Button({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
+export function Button({
+  children,
+  variant = 'primary',
+  size = 'md',
   loading = false,
   disabled = false,
   className = '',
-  ...props 
+  ...props
 }) {
   const variants = {
     primary: 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20',
@@ -18,7 +18,7 @@ export function Button({
     ghost: 'bg-transparent hover:bg-slate-100 text-slate-700',
     outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50'
   }
-  
+
   const sizes = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-sm',
@@ -45,20 +45,24 @@ export function Button({
 }
 
 // Input Component
-export function Input({ 
-  label, 
-  error, 
+export function Input({
+  label,
+  error,
   className = '',
-  ...props 
+  id,
+  ...props
 }) {
+  const inputId = id || props.name
+
   return (
     <div className="space-y-1">
       {label && (
-        <label className="block text-sm font-medium text-slate-700">
+        <label htmlFor={inputId} className="block text-sm font-medium text-slate-700">
           {label}
         </label>
       )}
       <input
+        id={inputId}
         className={cn(
           'w-full px-4 py-2.5 rounded-xl border border-slate-200',
           'bg-white text-slate-900 placeholder:text-slate-400',
@@ -77,20 +81,24 @@ export function Input({
 }
 
 // Textarea Component
-export function Textarea({ 
-  label, 
-  error, 
+export function Textarea({
+  label,
+  error,
   className = '',
-  ...props 
+  id,
+  ...props
 }) {
+  const inputId = id || props.name
+
   return (
     <div className="space-y-1">
       {label && (
-        <label className="block text-sm font-medium text-slate-700">
+        <label htmlFor={inputId} className="block text-sm font-medium text-slate-700">
           {label}
         </label>
       )}
       <textarea
+        id={inputId}
         className={cn(
           'w-full px-4 py-2.5 rounded-xl border border-slate-200',
           'bg-white text-slate-900 placeholder:text-slate-400',
@@ -109,22 +117,26 @@ export function Textarea({
 }
 
 // Select Component
-export function Select({ 
-  label, 
-  options = [], 
-  error, 
+export function Select({
+  label,
+  options = [],
+  error,
   placeholder = 'Selecione...',
   className = '',
-  ...props 
+  id,
+  ...props
 }) {
+  const inputId = id || props.name
+
   return (
     <div className="space-y-1">
       {label && (
-        <label className="block text-sm font-medium text-slate-700">
+        <label htmlFor={inputId} className="block text-sm font-medium text-slate-700">
           {label}
         </label>
       )}
       <select
+        id={inputId}
         className={cn(
           'w-full px-4 py-2.5 rounded-xl border border-slate-200',
           'bg-white text-slate-900',
@@ -198,8 +210,12 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div 
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
         className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
         onClick={onClose}
       />

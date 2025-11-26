@@ -10,12 +10,12 @@ import { formatCurrency, STATUS_CONFIG } from '../lib/utils'
 export function DemandasPage() {
   const { demandas, loading, createDemanda, updateDemanda, deleteDemanda } = useDemandas()
   const { unidades } = useUnidades()
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingDemanda, setEditingDemanda] = useState(null)
   const [formLoading, setFormLoading] = useState(false)
   const [toast, setToast] = useState(null)
-  
+
   // Filters
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
@@ -23,10 +23,10 @@ export function DemandasPage() {
 
   const filteredDemandas = useMemo(() => {
     return demandas.filter(d => {
-      const matchesSearch = !searchTerm || 
+      const matchesSearch = !searchTerm ||
         d.item?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         d.descricao?.toLowerCase().includes(searchTerm.toLowerCase())
-      
+
       const matchesStatus = !statusFilter || d.status === statusFilter
       const matchesUnidade = !unidadeFilter || d.unidade_id === unidadeFilter
 
@@ -58,7 +58,7 @@ export function DemandasPage() {
 
   const handleSubmit = async (data) => {
     setFormLoading(true)
-    
+
     try {
       if (editingDemanda) {
         const result = await updateDemanda(editingDemanda.id, data)
@@ -84,7 +84,7 @@ export function DemandasPage() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Tem certeza que deseja excluir esta demanda?')) return
-    
+
     const result = await deleteDemanda(id)
     if (result.success) {
       showToast('Demanda excluída com sucesso!')
@@ -105,7 +105,7 @@ export function DemandasPage() {
       STATUS_CONFIG[d.status]?.label || d.status,
       d.data_prevista || ''
     ])
-    
+
     const csv = [headers, ...rows].map(row => row.join(';')).join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
@@ -114,7 +114,7 @@ export function DemandasPage() {
     link.download = `demandas-pca-${new Date().toISOString().split('T')[0]}.csv`
     link.click()
     URL.revokeObjectURL(url)
-    
+
     showToast('Arquivo exportado com sucesso!')
   }
 
@@ -124,7 +124,7 @@ export function DemandasPage() {
 
   return (
     <div className="animate-fade-in">
-      <PageHeader 
+      <PageHeader
         title="Demandas"
         description="Gerencie as demandas de contratação das unidades gestoras"
         action={
@@ -147,7 +147,7 @@ export function DemandasPage() {
               className="pl-10"
             />
           </div>
-          
+
           <Select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -215,8 +215,8 @@ export function DemandasPage() {
 
       {/* Toast */}
       {toast && (
-        <Toast 
-          message={toast.message} 
+        <Toast
+          message={toast.message}
           type={toast.type}
           onClose={() => setToast(null)}
         />

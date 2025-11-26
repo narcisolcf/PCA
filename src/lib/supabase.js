@@ -63,7 +63,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async create(unidade) {
       const { data, error } = await supabase
         .from('unidades_gestoras')
@@ -73,7 +73,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async update(id, updates) {
       const { data, error } = await supabase
         .from('unidades_gestoras')
@@ -84,7 +84,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async delete(id) {
       const { error } = await supabase
         .from('unidades_gestoras')
@@ -93,7 +93,7 @@ export const db = {
       if (error) throw error
     }
   },
-  
+
   // Demandas
   demandas: {
     async getAll() {
@@ -107,7 +107,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async getByUnidade(unidadeId) {
       const { data, error } = await supabase
         .from('demandas')
@@ -117,12 +117,14 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async create(demanda) {
-      const valorTotal = demanda.quantidade * demanda.valor_unitario
+      // Remove valor_total if present, as it is a generated column in DB
+      const { valor_total, ...demandaData } = demanda
+
       const { data, error } = await supabase
         .from('demandas')
-        .insert({ ...demanda, valor_total: valorTotal })
+        .insert(demandaData)
         .select(`
           *,
           unidade:unidades_gestoras(id, nome, sigla)
@@ -131,16 +133,15 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async update(id, updates) {
-      if (updates.quantidade !== undefined && updates.valor_unitario !== undefined) {
-        updates.valor_total = updates.quantidade * updates.valor_unitario
-      }
-      updates.updated_at = new Date().toISOString()
-      
+      // Remove valor_total if present
+      const { valor_total, ...updateData } = updates
+      updateData.updated_at = new Date().toISOString()
+
       const { data, error } = await supabase
         .from('demandas')
-        .update(updates)
+        .update(updateData)
         .eq('id', id)
         .select(`
           *,
@@ -150,7 +151,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async delete(id) {
       const { error } = await supabase
         .from('demandas')
@@ -158,7 +159,7 @@ export const db = {
         .eq('id', id)
       if (error) throw error
     },
-    
+
     async getStats() {
       const { data, error } = await supabase
         .from('demandas')
@@ -167,7 +168,7 @@ export const db = {
       return data
     }
   },
-  
+
   // PCA (Plano de Contratação Anual)
   pca: {
     async getAll() {
@@ -178,7 +179,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async getByAno(ano) {
       const { data, error } = await supabase
         .from('pca')
@@ -188,7 +189,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async create(pca) {
       const { data, error } = await supabase
         .from('pca')
@@ -198,7 +199,7 @@ export const db = {
       if (error) throw error
       return data
     },
-    
+
     async updateStatus(id, status) {
       const updates = { status }
       if (status === 'publicado') {
