@@ -1,0 +1,422 @@
+/**
+ * Design Tokens - PCA App
+ * Baseado nas diretrizes do Design System do gov.br
+ * Com adaptações para efeitos modernos (glassmorphism)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Rawline:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ==================== FONTES ==================== */
+  --font-sans: 'Rawline', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ==================== CORES PRIMÁRIAS (Gov.br) ==================== */
+  /* Azul Gov.br */
+  --color-primary-50: hsl(214, 100%, 97%);
+  --color-primary-100: hsl(214, 95%, 93%);
+  --color-primary-200: hsl(213, 97%, 87%);
+  --color-primary-300: hsl(212, 96%, 78%);
+  --color-primary-400: hsl(213, 94%, 68%);
+  --color-primary-500: hsl(217, 91%, 60%);  /* Cor principal */
+  --color-primary-600: hsl(221, 83%, 53%);
+  --color-primary-700: hsl(224, 76%, 48%);
+  --color-primary-800: hsl(226, 71%, 40%);
+  --color-primary-900: hsl(224, 64%, 33%);
+  --color-primary-950: hsl(226, 57%, 21%);
+
+  /* ==================== CORES SECUNDÁRIAS ==================== */
+  /* Verde (Sucesso) */
+  --color-success-50: hsl(142, 76%, 96%);
+  --color-success-100: hsl(141, 84%, 93%);
+  --color-success-200: hsl(141, 79%, 85%);
+  --color-success-300: hsl(142, 77%, 73%);
+  --color-success-400: hsl(142, 69%, 58%);
+  --color-success-500: hsl(142, 71%, 45%);
+  --color-success-600: hsl(142, 76%, 36%);
+  --color-success-700: hsl(142, 72%, 29%);
+  --color-success-800: hsl(143, 64%, 24%);
+  --color-success-900: hsl(144, 61%, 20%);
+
+  /* Vermelho (Erro/Perigo) */
+  --color-danger-50: hsl(0, 86%, 97%);
+  --color-danger-100: hsl(0, 93%, 94%);
+  --color-danger-200: hsl(0, 96%, 89%);
+  --color-danger-300: hsl(0, 94%, 82%);
+  --color-danger-400: hsl(0, 91%, 71%);
+  --color-danger-500: hsl(0, 84%, 60%);
+  --color-danger-600: hsl(0, 72%, 51%);
+  --color-danger-700: hsl(0, 74%, 42%);
+  --color-danger-800: hsl(0, 70%, 35%);
+  --color-danger-900: hsl(0, 63%, 31%);
+
+  /* Amarelo (Aviso/Warning) */
+  --color-warning-50: hsl(48, 100%, 96%);
+  --color-warning-100: hsl(48, 96%, 89%);
+  --color-warning-200: hsl(48, 97%, 77%);
+  --color-warning-300: hsl(46, 97%, 65%);
+  --color-warning-400: hsl(43, 96%, 56%);
+  --color-warning-500: hsl(38, 92%, 50%);
+  --color-warning-600: hsl(32, 95%, 44%);
+  --color-warning-700: hsl(26, 90%, 37%);
+  --color-warning-800: hsl(23, 83%, 31%);
+  --color-warning-900: hsl(22, 78%, 26%);
+
+  /* ==================== CORES NEUTRAS ==================== */
+  --color-slate-50: hsl(210, 40%, 98%);
+  --color-slate-100: hsl(210, 40%, 96%);
+  --color-slate-200: hsl(214, 32%, 91%);
+  --color-slate-300: hsl(213, 27%, 84%);
+  --color-slate-400: hsl(215, 20%, 65%);
+  --color-slate-500: hsl(215, 16%, 47%);
+  --color-slate-600: hsl(215, 19%, 35%);
+  --color-slate-700: hsl(215, 25%, 27%);
+  --color-slate-800: hsl(217, 33%, 17%);
+  --color-slate-850: hsl(217, 38%, 13%);
+  --color-slate-900: hsl(222, 47%, 11%);
+  --color-slate-950: hsl(229, 84%, 5%);
+
+  /* ==================== CORES DE SUPERFÍCIE ==================== */
+  --color-surface: hsl(210, 40%, 98%);
+  --color-surface-dark: hsl(222, 47%, 11%);
+  --color-background: hsl(0, 0%, 100%);
+  --color-foreground: hsl(222, 47%, 11%);
+
+  /* ==================== CORES DE TEXTO ==================== */
+  --color-text-primary: hsl(222, 47%, 11%);
+  --color-text-secondary: hsl(215, 16%, 47%);
+  --color-text-muted: hsl(215, 20%, 65%);
+  --color-text-inverse: hsl(0, 0%, 100%);
+}
+
+/* ==================== RESET E ESTILOS BASE ==================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: linear-gradient(135deg, hsl(210, 40%, 98%) 0%, hsl(214, 32%, 91%) 100%);
+  min-height: 100vh;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+/* ==================== SCROLLBAR CUSTOMIZADA ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-slate-200);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate-500);
+}
+
+/* ==================== ANIMAÇÕES ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==================== CLASSES UTILITÁRIAS ==================== */
+
+/* Animações */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animate-slide-out {
+  animation: slideOut 0.3s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out forwards;
+}
+
+.animate-scale-out {
+  animation: scaleOut 0.2s ease-out forwards;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-slate-200) 25%,
+    var(--color-slate-100) 50%,
+    var(--color-slate-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Card Hover Effect */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Input Focus Ring */
+.input-ring {
+  transition: all 0.2s;
+}
+
+.input-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsla(217, 91%, 60%, 0.3);
+  border-color: var(--color-primary-500);
+}
+
+/* Navigation Underline */
+.nav-underline {
+  position: relative;
+}
+
+.nav-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: var(--color-primary-600);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-underline:hover::after,
+.nav-underline.active::after {
+  width: 100%;
+}
+
+/* Table Row Hover */
+.table-row-hover {
+  transition: background 0.15s ease;
+}
+
+.table-row-hover:hover {
+  background: linear-gradient(
+    90deg,
+    hsla(217, 91%, 60%, 0.05) 0%,
+    transparent 100%
+  );
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-slate-200);
+  border-top-color: var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.spinner-lg {
+  width: 32px;
+  height: 32px;
+  border-width: 4px;
+}
+
+/* Focus Visible (Acessibilidade) */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Texto de Ajuda/Hint */
+.hint-text {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Texto de Erro */
+.error-text {
+  font-size: 0.875rem;
+  color: var(--color-danger-600);
+  margin-top: 0.25rem;
+}
+
+/* Leading Relaxed (para textarea) */
+.leading-relaxed {
+  line-height: 1.75;
+}
+
+/* Truncate Text */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
