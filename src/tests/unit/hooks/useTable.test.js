@@ -96,6 +96,11 @@ describe('useTable Hook', () => {
 
       act(() => {
         result.current.nextPage();
+      });
+
+      expect(result.current.currentPage).toBe(2);
+
+      act(() => {
         result.current.prevPage();
       });
 
@@ -122,11 +127,13 @@ describe('useTable Hook', () => {
         pageSize: 5
       }));
 
+      const { totalPages } = result.current;
+
       act(() => {
         result.current.goToPage(10); // Beyond total pages
       });
 
-      expect(result.current.currentPage).toBe(1); // Should stay on page 1
+      expect(result.current.currentPage).toBe(totalPages); // Should clamp to last page
     });
 
     it('should not go to page less than 1', () => {
@@ -210,6 +217,12 @@ describe('useTable Hook', () => {
 
       act(() => {
         result.current.handleSort('name'); // First click: asc
+      });
+
+      expect(result.current.sortDirection).toBe('asc');
+      expect(result.current.data[0].name).toBe('Alice');
+
+      act(() => {
         result.current.handleSort('name'); // Second click: desc
       });
 
