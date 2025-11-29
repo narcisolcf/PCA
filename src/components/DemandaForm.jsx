@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button, Input, Textarea, Select, Modal } from './ui';
 import { formatCurrency, getQuarter, PRIORITY_CONFIG } from '../lib/utils';
-import { validators, validateForm, hasErrors } from '../lib/validators';
+import { validators } from '../lib/validators';
+import { useForm } from '../hooks';
 
 export function DemandaForm({
   isOpen,
@@ -11,95 +12,73 @@ export function DemandaForm({
   initialData = null,
   loading = false,
 }) {
-  const [formData, setFormData] = useState({
-    unidade_id: '',
-    item: '',
-    descricao: '',
-    justificativa: '',
-    quantidade: 1,
-    valor_unitario: 0,
-    data_prevista: '',
-    prioridade: 3,
-    status: 'pendente',
+  // Preparar valores iniciais do formulário
+  const getInitialValues = () => {
+    if (initialData) {
+      return {
+        unidade_id: initialData.unidade_id || '',
+        item: initialData.item || '',
+        descricao: initialData.descricao || '',
+        justificativa: initialData.justificativa || '',
+        quantidade: initialData.quantidade || 1,
+        valor_unitario: initialData.valor_unitario || 0,
+        data_prevista: initialData.data_prevista?.split('T')[0] || '',
+        prioridade: initialData.prioridade || 3,
+        status: initialData.status || 'pendente',
+      };
+    }
+
+    return {
+      unidade_id: '',
+      item: '',
+      descricao: '',
+      justificativa: '',
+      quantidade: 1,
+      valor_unitario: 0,
+      data_prevista: '',
+      prioridade: 3,
+      status: 'pendente',
+    };
+  };
+
+  // Regras de validação
+  const validationRules = {
+    unidade_id: [validators.required],
+    item: [validators.required, validators.minLen(3), validators.maxLen(255)],
+    descricao: [validators.maxLen(5000)],
+    justificativa: [validators.maxLen(5000)],
+    quantidade: [
+      validators.required,
+      validators.positive,
+      validators.maxValue(999999),
+    ],
+    valor_unitario: [
+      validators.required,
+      validators.nonNegative,
+      validators.maxValue(999999999.99),
+    ],
+  };
+
+  // Hook useForm com validação e handlers
+  const { values, errors, handleChange, handleSubmit, reset } = useForm({
+    initialValues: getInitialValues(),
+    validationRules,
+    onSubmit: (formValues) => {
+      const trimestre = getQuarter(formValues.data_prevista);
+      onSubmit({ ...formValues, trimestre });
+    },
+    devMode: import.meta.env.DEV, // Console.log apenas em desenvolvimento
   });
 
-  const [errors, setErrors] = useState({});
-
-  // Reset form when modal opens/closes or when editing different item
+  // Reset form quando modal fecha ou initialData muda
   useEffect(() => {
-    const newFormData = initialData
-      ? {
-          unidade_id: initialData.unidade_id || '',
-          item: initialData.item || '',
-          descricao: initialData.descricao || '',
-          justificativa: initialData.justificativa || '',
-          quantidade: initialData.quantidade || 1,
-          valor_unitario: initialData.valor_unitario || 0,
-          data_prevista: initialData.data_prevista?.split('T')[0] || '',
-          prioridade: initialData.prioridade || 3,
-          status: initialData.status || 'pendente',
-        }
-      : {
-          unidade_id: '',
-          item: '',
-          descricao: '',
-          justificativa: '',
-          quantidade: 1,
-          valor_unitario: 0,
-          data_prevista: '',
-          prioridade: 3,
-          status: 'pendente',
-        };
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFormData(newFormData);
-    setErrors({});
+    if (isOpen) {
+      reset(getInitialValues());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData, isOpen]);
 
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'number' ? parseFloat(value) || 0 : value,
-    }));
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: null }));
-    }
-  };
-
-  const validate = () => {
-    const validationRules = {
-      unidade_id: [validators.required],
-      item: [validators.required, validators.minLen(3), validators.maxLen(255)],
-      descricao: [validators.maxLen(5000)],
-      justificativa: [validators.maxLen(5000)],
-      quantidade: [
-        validators.required,
-        validators.positive,
-        validators.maxValue(999999),
-      ],
-      valor_unitario: [
-        validators.required,
-        validators.nonNegative,
-        validators.maxValue(999999999.99),
-      ],
-    };
-
-    const newErrors = validateForm(formData, validationRules);
-    setErrors(newErrors);
-    return !hasErrors(newErrors);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      const trimestre = getQuarter(formData.data_prevista);
-      onSubmit({ ...formData, trimestre });
-    }
-  };
-
-  const valorTotal = formData.quantidade * formData.valor_unitario;
+  const valorTotal = values.quantidade * values.valor_unitario;
 
   return (
     <Modal
@@ -113,7 +92,7 @@ export function DemandaForm({
         <Select
           label="Unidade Gestora *"
           name="unidade_id"
-          value={formData.unidade_id}
+          value={values.unidade_id}
           onChange={handleChange}
           error={errors.unidade_id}
           options={unidades.map((u) => ({ value: u.id, label: u.nome }))}
@@ -124,7 +103,7 @@ export function DemandaForm({
         <Input
           label="Item / Serviço *"
           name="item"
-          value={formData.item}
+          value={values.item}
           onChange={handleChange}
           error={errors.item}
           placeholder="Ex: Papel A4, Manutenção de Ar-Condicionado..."
@@ -134,7 +113,7 @@ export function DemandaForm({
         <Textarea
           label="Descrição Detalhada"
           name="descricao"
-          value={formData.descricao}
+          value={values.descricao}
           onChange={handleChange}
           placeholder="Especificações técnicas, marca de referência..."
           rows={3}
@@ -144,7 +123,7 @@ export function DemandaForm({
         <Textarea
           label="Justificativa"
           name="justificativa"
-          value={formData.justificativa}
+          value={values.justificativa}
           onChange={handleChange}
           placeholder="Por que esta contratação é necessária?"
           rows={3}
@@ -157,7 +136,7 @@ export function DemandaForm({
             name="quantidade"
             type="number"
             min="1"
-            value={formData.quantidade}
+            value={values.quantidade}
             onChange={handleChange}
             error={errors.quantidade}
           />
@@ -168,7 +147,7 @@ export function DemandaForm({
             type="number"
             step="0.01"
             min="0"
-            value={formData.valor_unitario}
+            value={values.valor_unitario}
             onChange={handleChange}
             error={errors.valor_unitario}
             className="currency-input"
@@ -178,7 +157,7 @@ export function DemandaForm({
             label="Data Prevista"
             name="data_prevista"
             type="date"
-            value={formData.data_prevista}
+            value={values.data_prevista}
             onChange={handleChange}
           />
         </div>
@@ -188,7 +167,7 @@ export function DemandaForm({
           <Select
             label="Prioridade"
             name="prioridade"
-            value={formData.prioridade}
+            value={values.prioridade}
             onChange={handleChange}
             options={Object.entries(PRIORITY_CONFIG).map(([value, config]) => ({
               value,
@@ -200,7 +179,7 @@ export function DemandaForm({
             <Select
               label="Status"
               name="status"
-              value={formData.status}
+              value={values.status}
               onChange={handleChange}
               options={[
                 { value: 'pendente', label: '⏳ Pendente' },
@@ -222,10 +201,10 @@ export function DemandaForm({
               {formatCurrency(valorTotal)}
             </span>
           </div>
-          {formData.data_prevista && (
+          {values.data_prevista && (
             <p className="text-xs text-blue-600 mt-2">
-              Trimestre previsto: {getQuarter(formData.data_prevista)} de{' '}
-              {new Date(formData.data_prevista).getFullYear()}
+              Trimestre previsto: {getQuarter(values.data_prevista)} de{' '}
+              {new Date(values.data_prevista).getFullYear()}
             </p>
           )}
         </div>
