@@ -1,12 +1,13 @@
-# Pull Request - FASE 3 e FASE 4: Componentes Base e Hook useForm
+# Pull Request - FASE 3, 4 e 5: Componentes Base + Hooks + Tabelas
 
 ## 📋 Resumo
 
-Implementação das **FASE 3 - Componentes Base** e **FASE 4 - Hook useForm e Refatoração**, incluindo:
-- 10 componentes UI reutilizáveis (formulário + apresentação)
-- Hook customizado `useForm` para gerenciamento de formulários
-- Refatoração de DemandaForm usando o novo hook
+Implementação das **FASE 3 - Componentes Base**, **FASE 4 - Hook useForm** e **FASE 5 - Tabelas**, incluindo:
+- 12 componentes UI reutilizáveis (formulário + apresentação + tabela)
+- 2 hooks customizados (`useForm` + `useTable`)
+- Refatoração de DemandaForm e DemandasTable
 - Sistema completo de design com acessibilidade integrada
+- Paginação automática em tabelas
 
 ---
 
@@ -140,6 +141,102 @@ Hook enterprise-grade para gerenciamento de formulários com:
 
 ---
 
+### FASE 5.2 - Hook useTable Customizado
+
+#### **useTable.js** (175 linhas)
+Hook para gerenciamento de tabelas com:
+
+**Features:**
+- Ordenação automática por qualquer campo
+- Paginação configurável (pageSize)
+- Filtros customizados
+- Conversão automática de tipos para ordenação
+- Dados retornados: paginados, ordenados, filtrados
+
+**Estado:**
+- `sortField`, `sortDirection` - Ordenação
+- `currentPage`, `totalPages` - Paginação
+- `hasNextPage`, `hasPrevPage` - Navegação
+
+**Métodos:**
+- `handleSort` - Alterna ordenação
+- `goToPage`, `nextPage`, `prevPage` - Navegação
+- `setSort` - Define ordenação programaticamente
+- `resetPagination` - Reseta para primeira página
+
+**Informações:**
+- `isEmpty`, `totalItems`, `itemsInPage`
+- `startIndex`, `endIndex` - Índices atuais
+
+---
+
+### FASE 5.2 - Componente Table Base
+
+#### **Table.jsx** (270 linhas)
+Tabela genérica e reutilizável com:
+
+**Features:**
+- ✅ Colunas configuráveis com `render` customizado
+- ✅ Ordenação integrada com ícones visuais
+- ✅ Paginação completa com navegação
+- ✅ Empty state configurável
+- ✅ Loading overlay
+- ✅ Responsivo (overflow-x-auto)
+- ✅ Alinhamento de colunas (left, right, center)
+- ✅ Linhas hoverable e striped (opcional)
+- ✅ Tamanhos: sm, md, lg
+
+**Exemplo de uso:**
+```jsx
+const columns = [
+  { key: 'name', label: 'Nome', sortable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  {
+    key: 'actions',
+    label: 'Ações',
+    align: 'right',
+    render: (row) => <Button onClick={() => edit(row)}>Edit</Button>
+  }
+];
+
+<Table
+  columns={columns}
+  data={users}
+  sorting={{ field: 'name', direction: 'asc' }}
+  onSort={handleSort}
+  pagination={paginationState}
+  onPageChange={goToPage}
+/>
+```
+
+---
+
+### FASE 5.2 - Componente EmptyState
+
+#### **EmptyState.jsx** (30 linhas)
+- ✅ Componente genérico para estados vazios
+- ✅ Props: icon, title, description, action
+- ✅ Reutilizável em todo o app
+
+---
+
+### FASE 5.1 - Refatoração DemandasTable
+
+**Antes:** 320 linhas com lógica manual de ordenação
+**Depois:** 324 linhas usando Table + useTable
+
+**Mudanças:**
+- ✅ **Adicionado:** Paginação (10 itens por página)
+- ✅ **Adicionado:** Números de página com reticências
+- ✅ **Desktop:** Usa componente Table reutilizável
+- ✅ **Mobile:** Mantém cards expansíveis + paginação
+- ✅ **Código:** Muito mais limpo e declarativo
+- ✅ **Colunas:** Definição externa e reutilizável
+
+**Resultado:** +4 linhas, mas com muito mais funcionalidades
+
+---
+
 ## 📊 Métricas Consolidadas
 
 ### FASE 3 - Componentes Base
@@ -164,15 +261,31 @@ Hook enterprise-grade para gerenciamento de formulários com:
 | **ESLint** | ✅ 0 erros, 0 warnings |
 | **Build** | ✅ Sucesso |
 
-### Totais Gerais (FASE 3 + 4)
+### FASE 5 - Tabelas
 
 | Métrica | Valor |
 |---------|-------|
-| **Total de Arquivos Criados** | 13 |
-| **Total de Linhas Adicionadas** | +830 linhas |
-| **Componentes UI** | 10 |
-| **Hooks Customizados** | 1 |
-| **Melhorias de Acessibilidade** | ARIA, forwardRef, ESC handling, focus visible |
+| **Hook Criado** | 1 (useTable.js - 175 linhas) |
+| **Componentes Criados** | 2 (Table, EmptyState) |
+| **Tabelas Refatoradas** | 1 (DemandasTable.jsx) |
+| **Paginação** | 10 itens/página (desktop + mobile) |
+| **Arquivos Criados** | 3 |
+| **Linhas Adicionadas** | +475 linhas |
+| **Bundle** | 632KB → 668KB (+5.7%) |
+| **ESLint** | ✅ 0 erros, 0 warnings |
+| **Build** | ✅ Sucesso |
+
+### Totais Gerais (FASE 3 + 4 + 5)
+
+| Métrica | Valor |
+|---------|-------|
+| **Total de Arquivos Criados** | 16 |
+| **Total de Linhas Adicionadas** | ~1.305 linhas |
+| **Componentes UI** | 12 |
+| **Hooks Customizados** | 2 |
+| **Formulários Refatorados** | 2 |
+| **Melhorias de Acessibilidade** | ARIA, forwardRef, ESC handling, focus visible, keyboard nav |
+| **Bundle Size** | 632KB → 668KB (+5.7%) |
 
 ---
 
@@ -199,10 +312,20 @@ src/hooks/useForm.js
 src/hooks/index.js
 ```
 
+### FASE 5
+```
+src/hooks/useTable.js
+src/components/ui/Table.jsx
+src/components/ui/EmptyState.jsx
+```
+
 ## 📝 Arquivos Modificados
 
 - `src/components/DemandaForm.jsx` - Refatorado para usar useForm hook
-- `PLANO_IMPLEMENTACAO.md` - Análises comparativas das FASE 3 e 4
+- `src/components/DemandasTable.jsx` - Refatorado para usar Table + useTable
+- `src/components/ui/index.js` - Adicionados exports de Table e EmptyState
+- `src/hooks/index.js` - Adicionados exports de useForm e useTable
+- `PLANO_IMPLEMENTACAO.md` - Análises comparativas das FASE 3, 4 e 5
 
 ---
 
@@ -225,6 +348,15 @@ src/hooks/index.js
 5. **isDirty check:** Detectar modificações no formulário
 6. **touched tracking:** Rastrear campos tocados pelo usuário
 7. **Integração perfeita:** Com validators existentes
+
+### FASE 5
+1. **Hook useTable reutilizável:** Para qualquer tabela futura
+2. **Componente Table genérico:** Configurável via props
+3. **Paginação automática:** Desktop e mobile
+4. **Números de página inteligentes:** Com reticências (...)
+5. **EmptyState genérico:** Reutilizável em todo o app
+6. **Render customizado:** Células totalmente configuráveis
+7. **Loading overlay:** Feedback visual durante carregamento
 
 ---
 
@@ -249,6 +381,16 @@ src/hooks/index.js
 - [x] ESLint passing (0 erros)
 - [x] Documentação atualizada
 
+### FASE 5
+- [x] Hook useTable criado
+- [x] Componente Table base criado
+- [x] Componente EmptyState criado
+- [x] DemandasTable refatorado
+- [x] Paginação implementada
+- [x] Build sem erros
+- [x] ESLint passing (0 erros)
+- [x] Documentação atualizada
+
 ---
 
 ## 🎯 Melhorias de Acessibilidade
@@ -258,16 +400,15 @@ src/hooks/index.js
 - ✅ **ESC key handling** em Modal
 - ✅ **Focus visible states** em todos os componentes
 - ✅ **Required indicator** visual em FormField
-- ✅ **Keyboard navigation** em Collapse
+- ✅ **Keyboard navigation** em Collapse e Table
 - ✅ **WCAG AA compliant**
 
 ---
 
-## 🚀 Próximos Passos (FASE 5)
+## 🚀 Próximos Passos (FASE 6)
 
 Após o merge deste PR, seguiremos para:
-- **FASE 5:** Componentes de Tabelas e Listagens (DemandasTable)
-- **FASE 6:** Efeitos Visuais e Temas
+- **FASE 6:** Efeitos Visuais e Temas (Glassmorphism)
 - **FASE 7:** Acessibilidade e Responsividade
 - **FASE 8:** Testes Automatizados
 
@@ -294,5 +435,6 @@ Cada fase inclui:
 - `6c3fe9b` - feat: FASE 3 - Componentes Base (Formulário e Apresentação)
 - `49f172a` - docs: Atualiza PLANO_IMPLEMENTACAO.md com análise da FASE 3
 - `38ea16b` - feat: FASE 4 - Hook useForm e Refatoração de DemandaForm
+- `727bab1` - feat: FASE 5 - Componentes de Tabela e Hook useTable
 
-**Título Sugerido:** `feat: FASE 3 e 4 - Componentes Base + Hook useForm`
+**Título Sugerido:** `feat: FASE 3, 4 e 5 - Componentes Base + Hooks (useForm, useTable) + Tabelas`
