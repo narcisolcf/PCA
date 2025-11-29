@@ -5,3 +5,4 @@
 
 export { useData } from './useData';
 export { useForm } from './useForm';
+export { useTable } from './useTable';

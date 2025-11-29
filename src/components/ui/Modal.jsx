@@ -84,7 +84,7 @@ export default function Modal({
             className="ml-auto p-1 rounded-lg hover:bg-slate-100 transition-colors"
             aria-label="Fechar modal"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
 
