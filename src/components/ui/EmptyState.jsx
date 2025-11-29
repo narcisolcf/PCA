@@ -1,8 +1,10 @@
 /**
  * Componente EmptyState
  * Estado vazio para quando não há dados para exibir
+ * Otimizado com React.memo para prevenir re-renders desnecessários
  */
 
+import { memo } from 'react';
 import { cn } from '../../lib/utils';
 
 /**
@@ -13,7 +15,7 @@ import { cn } from '../../lib/utils';
  * @param {React.ReactNode} props.action - Botão de ação (opcional)
  * @param {string} props.className - Classes adicionais
  */
-export function EmptyState({
+export const EmptyState = memo(function EmptyState({
   icon = '📭',
   title = 'Nenhum dado encontrado',
   description = '',
@@ -35,4 +37,6 @@ export function EmptyState({
       {action && <div>{action}</div>}
     </div>
   );
-}
+});
+
+EmptyState.displayName = 'EmptyState';
