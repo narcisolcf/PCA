@@ -56,7 +56,7 @@ const Select = forwardRef(
 
         {/* Ícone de chevron */}
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-          <ChevronDown className="h-5 w-5 text-slate-400" />
+          <ChevronDown className="h-5 w-5 text-slate-400" aria-hidden="true" />
         </div>
       </div>
     );

@@ -15,9 +15,9 @@ import { EmptyState } from './EmptyState';
 const SortIcon = ({ field, sortField, sortDirection }) => {
   if (sortField !== field) return null;
   return sortDirection === 'asc' ? (
-    <ChevronUp className="w-4 h-4" />
+    <ChevronUp className="w-4 h-4" aria-hidden="true" />
   ) : (
-    <ChevronDown className="w-4 h-4" />
+    <ChevronDown className="w-4 h-4" aria-hidden="true" />
   );
 };
 
@@ -196,7 +196,7 @@ export default function Table({
                   }
                   disabled={!pagination.hasPrevPage}
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-4 h-4" aria-hidden="true" />
                   Anterior
                 </Button>
 
@@ -256,7 +256,7 @@ export default function Table({
                   disabled={!pagination.hasNextPage}
                 >
                   Próxima
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4" aria-hidden="true" />
                 </Button>
               </div>
             </div>

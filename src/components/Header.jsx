@@ -63,8 +63,11 @@ export function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <button className="p-2 rounded-xl hover:bg-slate-100 transition-colors">
-              <Settings className="w-5 h-5 text-slate-600" />
+            <button
+              className="p-2 rounded-xl hover:bg-slate-100 transition-colors"
+              aria-label="Configurações"
+            >
+              <Settings className="w-5 h-5 text-slate-600" aria-hidden="true" />
             </button>
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-white font-semibold text-sm">
               AD

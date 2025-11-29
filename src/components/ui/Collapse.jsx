@@ -45,6 +45,7 @@ export default function Collapse({
             'h-5 w-5 text-slate-500 transition-transform duration-200',
             isOpen && 'transform rotate-180'
           )}
+          aria-hidden="true"
         />
       </button>
 
