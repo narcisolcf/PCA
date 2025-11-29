@@ -1,9 +1,11 @@
+import { memo } from 'react';
 import { cn } from '../../lib/cn';
 import { cardVariants } from '../theme';
 
 /**
  * Card Component
  * Componente de card reutilizável com variantes de estilo
+ * Otimizado com React.memo para prevenir re-renders desnecessários
  *
  * @example
  * <Card variant="default" padding="md">
@@ -15,7 +17,7 @@ import { cardVariants } from '../theme';
  *   <h2>Card com Glassmorphism</h2>
  * </Card>
  */
-export default function Card({
+const Card = memo(function Card({
   variant = 'default',
   padding = 'md',
   hover = false,
@@ -31,4 +33,8 @@ export default function Card({
       {children}
     </div>
   );
-}
+});
+
+Card.displayName = 'Card';
+
+export default Card;

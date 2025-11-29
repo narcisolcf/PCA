@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { AlertCircle, CheckCircle, Info, XCircle, X } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { alertVariants } from '../theme';
@@ -5,12 +6,13 @@ import { alertVariants } from '../theme';
 /**
  * Alert Component
  * Componente de alerta com variantes de tipo
+ * Otimizado com React.memo para prevenir re-renders desnecessários
  *
  * @example
  * <Alert variant="success" title="Sucesso!" message="Operação concluída" />
  * <Alert variant="danger" title="Erro!" message="Algo deu errado" onClose={() => {}} />
  */
-export default function Alert({
+const Alert = memo(function Alert({
   variant = 'info',
   title,
   message,
@@ -48,4 +50,8 @@ export default function Alert({
       )}
     </div>
   );
-}
+});
+
+Alert.displayName = 'Alert';
+
+export default Alert;
