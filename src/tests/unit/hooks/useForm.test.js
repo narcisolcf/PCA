@@ -3,18 +3,20 @@
  * Valida gerenciamento de estado de formulário
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
 import { useForm } from '../../../hooks/useForm';
 
 describe('useForm Hook', () => {
   // ==================== INICIALIZAÇÃO ====================
   describe('Initialization', () => {
     it('should initialize with empty values', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: {},
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: {},
+          onSubmit: vi.fn(),
+        })
+      );
 
       expect(result.current.values).toEqual({});
       expect(result.current.errors).toEqual({});
@@ -25,28 +27,34 @@ describe('useForm Hook', () => {
 
     it('should initialize with provided values', () => {
       const initialValues = { name: 'John', email: 'john@test.com' };
-      const { result } = renderHook(() => useForm({
-        initialValues,
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues,
+          onSubmit: vi.fn(),
+        })
+      );
 
       expect(result.current.values).toEqual(initialValues);
     });
 
     it('should initialize isValid as true when no validation rules', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: 'John' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: 'John' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       expect(result.current.isValid).toBe(true);
     });
 
     it('should initialize isDirty as false', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: 'John' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: 'John' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       expect(result.current.isDirty).toBe(false);
     });
@@ -55,14 +63,16 @@ describe('useForm Hook', () => {
   // ==================== GERENCIAMENTO DE VALORES ====================
   describe('Value Management', () => {
     it('should update values on handleChange', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       act(() => {
         result.current.handleChange({
-          target: { name: 'name', value: 'John' }
+          target: { name: 'name', value: 'John' },
         });
       });
 
@@ -70,14 +80,16 @@ describe('useForm Hook', () => {
     });
 
     it('should mark field as touched on handleBlur', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       act(() => {
         result.current.handleBlur({
-          target: { name: 'name' }
+          target: { name: 'name' },
         });
       });
 
@@ -85,10 +97,12 @@ describe('useForm Hook', () => {
     });
 
     it('should set field value programmatically', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       act(() => {
         result.current.setFieldValue('name', 'Jane');
@@ -98,16 +112,18 @@ describe('useForm Hook', () => {
     });
 
     it('should mark form as dirty when value changes', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: 'John' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: 'John' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       expect(result.current.isDirty).toBe(false);
 
       act(() => {
         result.current.handleChange({
-          target: { name: 'name', value: 'Jane' }
+          target: { name: 'name', value: 'Jane' },
         });
       });
 
@@ -119,14 +135,16 @@ describe('useForm Hook', () => {
   describe('Validation', () => {
     it('should validate field with validation rules', () => {
       const validationRules = {
-        name: (value) => value ? null : 'Nome é obrigatório'
+        name: (value) => (value ? null : 'Nome é obrigatório'),
       };
 
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        validationRules,
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          validationRules,
+          onSubmit: vi.fn(),
+        })
+      );
 
       act(() => {
         result.current.validateField('name');
@@ -137,14 +155,16 @@ describe('useForm Hook', () => {
 
     it('should clear error when field becomes valid', () => {
       const validationRules = {
-        name: (value) => value ? null : 'Nome é obrigatório'
+        name: (value) => (value ? null : 'Nome é obrigatório'),
       };
 
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        validationRules,
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          validationRules,
+          onSubmit: vi.fn(),
+        })
+      );
 
       // Primeiro, cria um erro
       act(() => {
@@ -163,10 +183,12 @@ describe('useForm Hook', () => {
     });
 
     it('should set field error programmatically', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       act(() => {
         result.current.setFieldError('name', 'Custom error');
@@ -177,15 +199,17 @@ describe('useForm Hook', () => {
 
     it('should validate all fields with validate()', () => {
       const validationRules = {
-        name: (value) => value ? null : 'Nome é obrigatório',
-        email: (value) => value ? null : 'Email é obrigatório'
+        name: (value) => (value ? null : 'Nome é obrigatório'),
+        email: (value) => (value ? null : 'Email é obrigatório'),
       };
 
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '', email: '' },
-        validationRules,
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '', email: '' },
+          validationRules,
+          onSubmit: vi.fn(),
+        })
+      );
 
       act(() => {
         result.current.validate();
@@ -197,14 +221,16 @@ describe('useForm Hook', () => {
 
     it('should update isValid based on errors', () => {
       const validationRules = {
-        name: (value) => value ? null : 'Nome é obrigatório'
+        name: (value) => (value ? null : 'Nome é obrigatório'),
       };
 
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        validationRules,
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          validationRules,
+          onSubmit: vi.fn(),
+        })
+      );
 
       // Initially valid (no validation run yet)
       expect(result.current.isValid).toBe(true);
@@ -230,10 +256,12 @@ describe('useForm Hook', () => {
   describe('Submission', () => {
     it('should call onSubmit with values when form is valid', async () => {
       const onSubmit = vi.fn().mockResolvedValue(undefined);
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: 'John' },
-        onSubmit,
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: 'John' },
+          onSubmit,
+        })
+      );
 
       await act(async () => {
         await result.current.handleSubmit({ preventDefault: vi.fn() });
@@ -243,11 +271,15 @@ describe('useForm Hook', () => {
     });
 
     it('should set isSubmitting to true during submission', async () => {
-      const onSubmit = vi.fn(() => new Promise(resolve => setTimeout(resolve, 100)));
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: 'John' },
-        onSubmit,
-      }));
+      const onSubmit = vi.fn(
+        () => new Promise((resolve) => setTimeout(resolve, 100))
+      );
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: 'John' },
+          onSubmit,
+        })
+      );
 
       const submitPromise = act(async () => {
         await result.current.handleSubmit({ preventDefault: vi.fn() });
@@ -264,10 +296,12 @@ describe('useForm Hook', () => {
 
     it('should increment submitCount on each submission', async () => {
       const onSubmit = vi.fn().mockResolvedValue(undefined);
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: 'John' },
-        onSubmit,
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: 'John' },
+          onSubmit,
+        })
+      );
 
       expect(result.current.submitCount).toBe(0);
 
@@ -287,14 +321,16 @@ describe('useForm Hook', () => {
     it('should not submit when form is invalid', async () => {
       const onSubmit = vi.fn();
       const validationRules = {
-        name: (value) => value ? null : 'Nome é obrigatório'
+        name: (value) => (value ? null : 'Nome é obrigatório'),
       };
 
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        validationRules,
-        onSubmit,
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          validationRules,
+          onSubmit,
+        })
+      );
 
       await act(async () => {
         await result.current.handleSubmit({ preventDefault: vi.fn() });
@@ -309,10 +345,12 @@ describe('useForm Hook', () => {
   describe('Reset', () => {
     it('should reset form to initial values', () => {
       const initialValues = { name: 'John' };
-      const { result } = renderHook(() => useForm({
-        initialValues,
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues,
+          onSubmit: vi.fn(),
+        })
+      );
 
       // Change value
       act(() => {
@@ -330,10 +368,12 @@ describe('useForm Hook', () => {
     });
 
     it('should clear errors on reset', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       // Set error
       act(() => {
@@ -351,10 +391,12 @@ describe('useForm Hook', () => {
     });
 
     it('should clear touched on reset', () => {
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: '' },
-        onSubmit: vi.fn(),
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: '' },
+          onSubmit: vi.fn(),
+        })
+      );
 
       // Mark as touched
       act(() => {
@@ -376,13 +418,18 @@ describe('useForm Hook', () => {
   describe('Transform', () => {
     it('should transform values before submission', async () => {
       const onSubmit = vi.fn().mockResolvedValue(undefined);
-      const transform = (values) => ({ ...values, name: values.name.toUpperCase() });
+      const transform = (values) => ({
+        ...values,
+        name: values.name.toUpperCase(),
+      });
 
-      const { result } = renderHook(() => useForm({
-        initialValues: { name: 'john' },
-        transform,
-        onSubmit,
-      }));
+      const { result } = renderHook(() =>
+        useForm({
+          initialValues: { name: 'john' },
+          transform,
+          onSubmit,
+        })
+      );
 
       await act(async () => {
         await result.current.handleSubmit({ preventDefault: vi.fn() });
