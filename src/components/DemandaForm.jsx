@@ -87,7 +87,7 @@ export function DemandaForm({
       title={initialData ? 'Editar Demanda' : 'Nova Demanda'}
       size="lg"
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
         {/* Unidade Gestora */}
         <Select
           label="Unidade Gestora *"
@@ -131,7 +131,7 @@ export function DemandaForm({
         />
 
         {/* Grid: Quantidade, Valor, Data */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-8">
           <Input
             label="Quantidade *"
             name="quantidade"
@@ -165,7 +165,7 @@ export function DemandaForm({
         </div>
 
         {/* Grid: Prioridade, Status */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8">
           <Select
             label="Prioridade"
             name="prioridade"
@@ -195,26 +195,30 @@ export function DemandaForm({
           )}
         </div>
 
-        {/* Valor Total */}
-        <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-blue-800">
-              Valor Total Estimado
-            </span>
-            <span className="text-2xl font-bold text-blue-900">
-              {formatCurrency(valorTotal)}
-            </span>
+        {/* Valor Total - Card Glassmorphism Flutuante */}
+        <div className="relative bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 shadow-lg">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Valor Total Estimado
+              </span>
+              <span className="text-4xl font-light text-slate-700">
+                {formatCurrency(valorTotal)}
+              </span>
+            </div>
+            {values.data_prevista && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/50 rounded-full">
+                <span className="text-xs font-medium text-slate-600">
+                  {getQuarter(values.data_prevista)} /{' '}
+                  {new Date(values.data_prevista).getFullYear()}
+                </span>
+              </div>
+            )}
           </div>
-          {values.data_prevista && (
-            <p className="text-xs text-blue-600 mt-2">
-              Trimestre previsto: {getQuarter(values.data_prevista)} de{' '}
-              {new Date(values.data_prevista).getFullYear()}
-            </p>
-          )}
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+        <div className="flex justify-end gap-4 pt-6 border-t border-slate-100">
           <Button type="button" variant="ghost" onClick={onClose}>
             Cancelar
           </Button>
