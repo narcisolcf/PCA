@@ -46,26 +46,25 @@ export const buttonVariants = cva(
 
 /**
  * ==================== INPUT VARIANTS ====================
- * Variantes para o componente Input
+ * Variantes para o componente Input (Design Moderno - Estilo Linear/Vercel)
  */
 export const inputVariants = cva(
-  // Classes base
-  'w-full rounded-lg border bg-white px-4 py-3 text-slate-900 transition-all placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+  // Classes base - Visual limpo e fluido
+  'w-full rounded-2xl border-0 bg-slate-50 px-5 py-3 text-slate-900 transition-all duration-300 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-100 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:shadow-sm',
   {
     variants: {
       size: {
-        sm: 'h-9 text-sm px-3 py-2',
-        md: 'h-11 text-base px-4 py-3',
-        lg: 'h-[60px] text-base px-4 py-3', // Altura mínima 60px conforme especificação
+        sm: 'h-9 text-sm px-4 py-2 rounded-xl',
+        md: 'h-11 text-base px-5 py-3 rounded-2xl',
+        lg: 'h-[60px] text-base px-5 py-4 rounded-2xl', // Altura mínima 60px conforme especificação
       },
       state: {
-        default:
-          'border-slate-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20',
+        default: '',
         error:
-          'border-danger-500 focus:border-danger-600 focus:ring-2 focus:ring-danger-500/20',
+          'bg-danger-50 focus:bg-danger-50 focus:ring-danger-100 text-danger-900',
         success:
-          'border-success-500 focus:border-success-600 focus:ring-2 focus:ring-success-500/20',
-        disabled: 'bg-slate-100 border-slate-200 cursor-not-allowed',
+          'bg-success-50 focus:bg-success-50 focus:ring-success-100 text-success-900',
+        disabled: 'bg-slate-100 cursor-not-allowed hover:bg-slate-100',
       },
     },
     defaultVariants: {
@@ -77,24 +76,23 @@ export const inputVariants = cva(
 
 /**
  * ==================== SELECT VARIANTS ====================
- * Variantes para o componente Select (Dropdown)
+ * Variantes para o componente Select (Design Moderno - Estilo Linear/Vercel)
  */
 export const selectVariants = cva(
-  // Classes base
-  'w-full rounded-lg border bg-white px-4 py-3 text-slate-900 transition-all focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer',
+  // Classes base - Visual limpo e fluido
+  'w-full rounded-2xl border-0 bg-slate-50 px-5 py-3 text-slate-900 transition-all duration-300 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer hover:bg-slate-100 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:shadow-sm',
   {
     variants: {
       size: {
-        sm: 'h-9 text-sm px-3 py-2',
-        md: 'h-11 text-base px-4 py-3',
-        lg: 'h-[60px] text-base px-4 py-3', // Altura mínima 60px conforme especificação
+        sm: 'h-9 text-sm px-4 py-2 rounded-xl',
+        md: 'h-11 text-base px-5 py-3 rounded-2xl',
+        lg: 'h-[60px] text-base px-5 py-4 rounded-2xl', // Altura mínima 60px conforme especificação
       },
       state: {
-        default:
-          'border-slate-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20',
+        default: '',
         error:
-          'border-danger-500 focus:border-danger-600 focus:ring-2 focus:ring-danger-500/20',
-        disabled: 'bg-slate-100 border-slate-200 cursor-not-allowed',
+          'bg-danger-50 focus:bg-danger-50 focus:ring-danger-100 text-danger-900',
+        disabled: 'bg-slate-100 cursor-not-allowed hover:bg-slate-100',
       },
     },
     defaultVariants: {
@@ -216,20 +214,19 @@ export const alertVariants = cva(
 
 /**
  * ==================== TEXTAREA VARIANTS ====================
- * Variantes para o componente Textarea
+ * Variantes para o componente Textarea (Design Moderno - Estilo Linear/Vercel)
  */
 export const textareaVariants = cva(
-  // Classes base
-  'w-full rounded-lg border bg-white px-4 py-3 text-slate-900 transition-all placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 resize-none leading-relaxed',
+  // Classes base - Visual limpo e fluido
+  'w-full rounded-2xl border-0 bg-slate-50 px-5 py-4 text-slate-900 transition-all duration-300 placeholder:text-slate-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 resize-none leading-relaxed hover:bg-slate-100 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:shadow-sm',
   {
     variants: {
       state: {
-        default:
-          'border-slate-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20',
+        default: '',
         error:
-          'border-danger-500 focus:border-danger-600 focus:ring-2 focus:ring-danger-500/20',
+          'bg-danger-50 focus:bg-danger-50 focus:ring-danger-100 text-danger-900',
         success:
-          'border-success-500 focus:border-success-600 focus:ring-2 focus:ring-success-500/20',
+          'bg-success-50 focus:bg-success-50 focus:ring-success-100 text-success-900',
       },
     },
     defaultVariants: {
@@ -240,15 +237,15 @@ export const textareaVariants = cva(
 
 /**
  * ==================== LABEL VARIANTS ====================
- * Variantes para o componente Label (usado em FormField)
+ * Variantes para o componente Label (Design Moderno - Discreto)
  */
 export const labelVariants = cva(
-  // Classes base
-  'block text-sm font-medium text-slate-700 mb-2',
+  // Classes base - Labels discretos e modernos
+  'block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 ml-1',
   {
     variants: {
       required: {
-        true: "after:content-['*'] after:ml-1 after:text-danger-500",
+        true: "after:content-['*'] after:ml-1 after:text-danger-400",
       },
       disabled: {
         true: 'opacity-50 cursor-not-allowed',
