@@ -97,6 +97,7 @@ export function DemandaForm({
           error={errors.unidade_id}
           options={unidades.map((u) => ({ value: u.id, label: u.nome }))}
           placeholder="Selecione a secretaria..."
+          size="lg"
         />
 
         {/* Item */}
@@ -159,6 +160,7 @@ export function DemandaForm({
             type="date"
             value={values.data_prevista}
             onChange={handleChange}
+            size="lg"
           />
         </div>
 
@@ -173,6 +175,7 @@ export function DemandaForm({
               value,
               label: `${config.icon} ${config.label}`,
             }))}
+            size="lg"
           />
 
           {initialData && (
@@ -187,6 +190,7 @@ export function DemandaForm({
                 { value: 'aprovada', label: '✅ Aprovada' },
                 { value: 'rejeitada', label: '❌ Rejeitada' },
               ]}
+              size="lg"
             />
           )}
         </div>
