@@ -17,10 +17,8 @@ export const buttonVariants = cva(
           'bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-primary-600/20 hover:shadow-primary-600/30',
         secondary:
           'bg-slate-100 text-slate-900 hover:bg-slate-200 hover:text-slate-900',
-        ghost:
-          'hover:bg-slate-100 text-slate-600 hover:text-slate-900',
-        danger:
-          'bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700',
+        ghost: 'hover:bg-slate-100 text-slate-600 hover:text-slate-900',
+        danger: 'bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700',
         outline:
           'border border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50',
         success:
@@ -58,8 +56,7 @@ export const inputVariants = cva(
         default: '',
         error:
           'bg-red-50/50 text-red-900 focus:ring-red-500/10 placeholder:text-red-300',
-        success:
-          'bg-emerald-50/50 text-emerald-900 focus:ring-emerald-500/10',
+        success: 'bg-emerald-50/50 text-emerald-900 focus:ring-emerald-500/10',
         disabled: 'bg-slate-100 text-slate-400 shadow-none',
       },
     },
@@ -131,56 +128,62 @@ export const labelVariants = cva(
   }
 );
 
-// Mantém os outros sem alterações drásticas, apenas ajustes finos
-export const cardVariants = cva(
-  'rounded-3xl transition-all duration-300',
-  {
-    variants: {
-      variant: {
-        default: 'bg-white border border-slate-100 shadow-sm',
-        glass: 'bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl',
-        elevated: 'bg-white shadow-xl hover:shadow-2xl hover:-translate-y-1',
-        outline: 'border-2 border-slate-200 bg-transparent',
-      },
-      padding: {
-        none: 'p-0',
-        sm: 'p-4',
-        md: 'p-6',
-        lg: 'p-8',
-      },
-      hover: {
-        true: 'hover:bg-slate-50/50 cursor-pointer',
-      },
+/**
+ * CARD VARIANTS
+ */
+export const cardVariants = cva('rounded-3xl transition-all duration-300', {
+  variants: {
+    variant: {
+      default: 'bg-white border border-slate-100 shadow-sm',
+      glass: 'bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl',
+      elevated: 'bg-white shadow-xl hover:shadow-2xl hover:-translate-y-1',
+      outline: 'border-2 border-slate-200 bg-transparent',
     },
-    defaultVariants: {
-      variant: 'default',
-      padding: 'md',
+    padding: {
+      none: 'p-0',
+      sm: 'p-4',
+      md: 'p-6',
+      lg: 'p-8',
     },
-  }
-);
+    hover: {
+      true: 'hover:bg-slate-50/50 cursor-pointer',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    padding: 'md',
+  },
+});
 
-export const modalVariants = cva(
-  'relative shadow-2xl overflow-hidden',
-  {
-    variants: {
-      size: {
-        sm: 'max-w-md',
-        md: 'max-w-lg',
-        lg: 'max-w-2xl',
-        xl: 'max-w-4xl',
-      },
-      variant: {
-        default: 'bg-white rounded-3xl',
-        glass: 'bg-white/90 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_0_100px_rgba(0,0,0,0.1)]',
-      },
+/**
+ * MODAL VARIANTS (Premium Glassmorphism)
+ */
+export const modalVariants = cva('relative overflow-hidden', {
+  variants: {
+    size: {
+      sm: 'max-w-md',
+      md: 'max-w-lg',
+      lg: 'max-w-3xl',
+      xl: 'max-w-5xl',
     },
-    defaultVariants: {
-      size: 'md',
-      variant: 'glass', // Mudado padrão para glass
+    variant: {
+      default: 'bg-white rounded-3xl shadow-2xl',
+      glass:
+        'bg-white/95 backdrop-blur-3xl rounded-3xl ' +
+        'border border-white/60 ' +
+        'shadow-[0_20px_70px_rgba(0,0,0,0.15)] ' +
+        'ring-1 ring-slate-900/5',
     },
-  }
-);
+  },
+  defaultVariants: {
+    size: 'md',
+    variant: 'glass',
+  },
+});
 
+/**
+ * BADGE VARIANTS
+ */
 export const badgeVariants = cva(
   'inline-flex items-center rounded-full font-semibold transition-colors ring-1 ring-inset',
   {
@@ -205,6 +208,9 @@ export const badgeVariants = cva(
   }
 );
 
+/**
+ * ALERT VARIANTS
+ */
 export const alertVariants = cva(
   'rounded-2xl p-4 flex items-start gap-3 border',
   {
