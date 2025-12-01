@@ -1,6 +1,6 @@
 /**
- * Exemplos de Uso das Variantes CVA
- * Este arquivo demonstra como usar as variantes definidas em variants.js
+ * Exemplos de Uso das Variantes CVA - Design System Premium
+ * Demonstração dos componentes com visual Glassmorphism e Inputs de 60px
  */
 
 import { cn } from '../../lib/cn';
@@ -9,113 +9,96 @@ import {
   inputVariants,
   cardVariants,
   badgeVariants,
+  textareaVariants, // Adicionado import que faltava
 } from './variants';
 
 /**
  * ==================== EXEMPLOS DE BUTTON ====================
  */
 
-// Exemplo 1: Button primário padrão (medium)
+// Exemplo 1: Button primário padrão
 const PrimaryButton = () => (
-  <button className={cn(buttonVariants())}>Botão Primário</button>
+  <button className={cn(buttonVariants())}>Confirmar Ação</button>
 );
 
-// Exemplo 2: Button secundário small
+// Exemplo 2: Button secundário pequeno
 const SecondaryButtonSmall = () => (
   <button className={cn(buttonVariants({ variant: 'secondary', size: 'sm' }))}>
-    Pequeno
+    Voltar
   </button>
 );
 
-// Exemplo 3: Button danger large com fullWidth
+// Exemplo 3: Button de perigo grande (Full Width)
 const DangerButtonLarge = () => (
   <button
     className={cn(
       buttonVariants({ variant: 'danger', size: 'lg', fullWidth: true })
     )}
   >
-    Deletar Tudo
+    Excluir Permanentemente
   </button>
 );
 
-// Exemplo 4: Button ghost com classes adicionais
-const GhostButtonWithExtraClasses = () => (
-  <button className={cn(buttonVariants({ variant: 'ghost' }), 'italic')}>
+// Exemplo 4: Button ghost para ações secundárias
+const GhostButton = () => (
+  <button className={cn(buttonVariants({ variant: 'ghost' }))}>
     Cancelar
   </button>
 );
 
 /**
- * ==================== EXEMPLOS DE INPUT ====================
+ * ==================== EXEMPLOS DE INPUT (60px Standard) ====================
  */
 
-// Exemplo 1: Input padrão (medium, default state)
-const DefaultInput = () => (
+// Exemplo 1: Input Premium (Large - 60px) - Padrão do Projeto
+const PremiumInput = () => (
   <input
     type="text"
-    className={cn(inputVariants())}
-    placeholder="Digite algo..."
+    className={cn(inputVariants({ size: 'lg' }))}
+    placeholder="Digite seu nome completo..."
   />
 );
 
-// Exemplo 2: Input large com state error
-const ErrorInputLarge = () => (
+// Exemplo 2: Input com Erro
+const ErrorInput = () => (
   <input
     type="email"
     className={cn(inputVariants({ size: 'lg', state: 'error' }))}
-    placeholder="Email inválido"
+    placeholder="email@invalido.com"
+    defaultValue="email@invalido"
   />
 );
 
-// Exemplo 3: Input small com state success
-const SuccessInputSmall = () => (
+// Exemplo 3: Input Sucesso
+const SuccessInput = () => (
   <input
     type="text"
-    className={cn(inputVariants({ size: 'sm', state: 'success' }))}
-    value="Email válido!"
+    className={cn(inputVariants({ size: 'lg', state: 'success' }))}
+    defaultValue="Cadastro verificado"
   />
 );
 
 /**
- * ==================== EXEMPLOS DE CARD ====================
+ * ==================== EXEMPLOS DE CARD (Glassmorphism) ====================
  */
 
-// Exemplo 1: Card padrão com padding medium
-const DefaultCard = () => (
-  <div className={cn(cardVariants())}>
-    <h3>Título do Card</h3>
-    <p>Conteúdo do card</p>
-  </div>
-);
-
-// Exemplo 2: Card com efeito glass e padding large
-const GlassCardLarge = () => (
-  <div className={cn(cardVariants({ variant: 'glass', padding: 'lg' }))}>
-    <h2>Card com Glassmorphism</h2>
-    <p>Este card tem efeito de vidro fosco</p>
-  </div>
-);
-
-// Exemplo 3: Card elevated com hover effect
-const ElevatedCardWithHover = () => (
-  <div
-    className={cn(cardVariants({ variant: 'elevated', hover: true }))}
-    onClick={() => console.log('Card clicado!')}
-  >
-    <h3>Card Clicável</h3>
-    <p>Passe o mouse para ver o efeito</p>
-  </div>
-);
-
-// Exemplo 4: Card outline sem padding (para conteúdo customizado)
-const OutlineCardNoPadding = () => (
-  <div className={cn(cardVariants({ variant: 'outline', padding: 'none' }))}>
-    <div className="p-6 border-b">
-      <h3>Header Customizado</h3>
+// Exemplo 1: Card Glass (Vidro) - Ideal para fundos coloridos/gradientes
+const GlassCard = () => (
+  <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-3xl">
+    <div className={cn(cardVariants({ variant: 'glass', padding: 'lg' }))}>
+      <h2 className="text-2xl font-light text-slate-800 mb-2">Efeito Vidro</h2>
+      <p className="text-slate-500">
+        Este card flutua sobre o fundo com um desfoque suave (backdrop-blur).
+      </p>
     </div>
-    <div className="p-6">
-      <p>Conteúdo com padding customizado</p>
-    </div>
+  </div>
+);
+
+// Exemplo 2: Card Elevado (Sombra suave)
+const ElevatedCard = () => (
+  <div className={cn(cardVariants({ variant: 'elevated', padding: 'md', hover: true }))}>
+    <h3 className="font-semibold text-slate-900">Card Interativo</h3>
+    <p className="text-slate-500 text-sm mt-1">Passe o mouse para ver a elevação.</p>
   </div>
 );
 
@@ -123,109 +106,74 @@ const OutlineCardNoPadding = () => (
  * ==================== EXEMPLOS DE BADGE ====================
  */
 
-// Exemplo 1: Badge success medium
-const SuccessBadge = () => (
-  <span className={cn(badgeVariants({ variant: 'success' }))}>Ativo</span>
-);
-
-// Exemplo 2: Badge danger small
-const DangerBadgeSmall = () => (
-  <span className={cn(badgeVariants({ variant: 'danger', size: 'sm' }))}>
-    Erro
-  </span>
-);
-
-// Exemplo 3: Badge warning large
-const WarningBadgeLarge = () => (
-  <span className={cn(badgeVariants({ variant: 'warning', size: 'lg' }))}>
-    Atenção
-  </span>
-);
-
-/**
- * ==================== EXEMPLOS DE COMPOSIÇÃO ====================
- */
-
-// Exemplo: Card com múltiplos elementos usando variantes
-const ComplexCard = () => (
-  <div className={cn(cardVariants({ variant: 'elevated', padding: 'lg' }))}>
-    <div className="flex items-center justify-between mb-4">
-      <h2 className="text-2xl font-bold">Título do Card</h2>
-      <span className={cn(badgeVariants({ variant: 'success' }))}>Novo</span>
-    </div>
-    <p className="mb-4 text-slate-600">
-      Descrição detalhada do conteúdo do card com informações importantes.
-    </p>
-    <div className="flex gap-2">
-      <button className={cn(buttonVariants({ variant: 'primary' }))}>
-        Confirmar
-      </button>
-      <button className={cn(buttonVariants({ variant: 'ghost' }))}>
-        Cancelar
-      </button>
-    </div>
+const BadgeShowcase = () => (
+  <div className="flex gap-2">
+    <span className={cn(badgeVariants({ variant: 'success', size: 'md' }))}>
+      ● Aprovada
+    </span>
+    <span className={cn(badgeVariants({ variant: 'warning', size: 'md' }))}>
+      ● Pendente
+    </span>
+    <span className={cn(badgeVariants({ variant: 'primary', size: 'sm' }))}>
+      Novo
+    </span>
   </div>
 );
 
 /**
- * ==================== EXEMPLO DE FORM COMPLETO ====================
+ * ==================== EXEMPLO DE FORMULÁRIO COMPLETO ====================
+ * Mostra a harmonia entre Inputs grandes e Labels discretos
  */
 const FormWithVariants = () => (
-  <div className={cn(cardVariants({ padding: 'lg' }))}>
-    <h2 className="text-xl font-bold mb-6">Formulário de Exemplo</h2>
+  <div className="max-w-md mx-auto p-8 bg-slate-50 rounded-3xl">
+    <div className={cn(cardVariants({ variant: 'glass', padding: 'lg' }))}>
+      <h2 className="text-xl font-bold text-slate-800 mb-6">Novo Cadastro</h2>
 
-    <div className="space-y-4">
-      {/* Campo Nome */}
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Nome Completo <span className="text-danger-500">*</span>
-        </label>
-        <input
-          type="text"
-          className={cn(inputVariants({ size: 'md' }))}
-          placeholder="Digite seu nome"
-        />
-      </div>
+      <div className="space-y-6">
+        {/* Campo Nome */}
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5 ml-3">
+            Nome Completo <span className="text-blue-500">*</span>
+          </label>
+          <input
+            type="text"
+            className={cn(inputVariants({ size: 'lg' }))}
+            placeholder="Como gostaria de ser chamado?"
+          />
+        </div>
 
-      {/* Campo Email com erro */}
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Email <span className="text-danger-500">*</span>
-        </label>
-        <input
-          type="email"
-          className={cn(inputVariants({ size: 'md', state: 'error' }))}
-          placeholder="email@exemplo.com"
-        />
-        <p className="error-text">Email inválido</p>
-      </div>
+        {/* Campo Email */}
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5 ml-3">
+            E-mail Corporativo
+          </label>
+          <input
+            type="email"
+            className={cn(inputVariants({ size: 'lg' }))}
+            placeholder="seu.nome@empresa.com"
+          />
+        </div>
 
-      {/* Campo Descrição */}
-      <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Descrição
-        </label>
-        <textarea
-          className={cn(
-            inputVariants({ size: 'md' }),
-            'min-h-[120px] resize-y'
-          )}
-          placeholder="Digite uma descrição..."
-        />
-      </div>
+        {/* Campo Descrição */}
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5 ml-3">
+            Observações
+          </label>
+          <textarea
+            className={cn(textareaVariants(), 'min-h-[120px]')}
+            placeholder="Digite os detalhes aqui..."
+          />
+        </div>
 
-      {/* Botões */}
-      <div className="flex gap-3 pt-4">
-        <button
-          className={cn(buttonVariants({ variant: 'primary', size: 'md' }))}
-        >
-          Enviar
-        </button>
-        <button
-          className={cn(buttonVariants({ variant: 'secondary', size: 'md' }))}
-        >
-          Cancelar
-        </button>
+        {/* Botões de Ação */}
+        <div className="flex gap-3 pt-4">
+          <button className={cn(buttonVariants({ variant: 'ghost', size: 'lg' }))}>
+            Cancelar
+          </button>
+          <button className={cn(buttonVariants({ variant: 'primary', size: 'lg', fullWidth: true }))}>
+            Salvar Cadastro
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -235,17 +183,12 @@ export {
   PrimaryButton,
   SecondaryButtonSmall,
   DangerButtonLarge,
-  GhostButtonWithExtraClasses,
-  DefaultInput,
-  ErrorInputLarge,
-  SuccessInputSmall,
-  DefaultCard,
-  GlassCardLarge,
-  ElevatedCardWithHover,
-  OutlineCardNoPadding,
-  SuccessBadge,
-  DangerBadgeSmall,
-  WarningBadgeLarge,
-  ComplexCard,
+  GhostButton,
+  PremiumInput,
+  ErrorInput,
+  SuccessInput,
+  GlassCard,
+  ElevatedCard,
+  BadgeShowcase,
   FormWithVariants,
 };
